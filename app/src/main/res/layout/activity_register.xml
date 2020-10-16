@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_my_second_logo_background"
+        android:src="@drawable/ic_my_second_logo_foreground"/>
+
+    <EditText
+        android:id="@+id/edtRegEmailId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40sp"
+        android:layout_marginTop="20sp"
+        android:hint="@string/enter_email"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:id="@+id/edtRegFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40sp"
+        android:layout_marginTop="10sp"
+        android:hint="@string/enter_fname"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edtRegLastName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40sp"
+        android:layout_marginTop="10sp"
+        android:hint="@string/enter_lname"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edtRegPass"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40sp"
+        android:layout_marginTop="10sp"
+        android:hint="@string/enter_pass"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/edtRegVerifyPass"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40sp"
+        android:layout_marginTop="10sp"
+        android:hint="@string/verify_pass"
+        android:inputType="textPassword"/>
+    
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progBar"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/btnReg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="20sp"
+        android:background="@drawable/btn_rounded"
+        android:padding="10sp"
+        android:text="@string/register_stmt"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txtRegAlreadyUser"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5sp"
+        android:text="@string/already_user"
+        android:textColor="@color/colorPrimary"/>
+
+</LinearLayout>

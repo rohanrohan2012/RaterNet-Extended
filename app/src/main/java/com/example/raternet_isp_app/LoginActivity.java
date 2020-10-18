@@ -27,11 +27,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public EditText edtLogPass;
     public Button btnLog;
     public TextView txtLogNotAUser;
-
     public ProgressBar progBar;
-
     private FirebaseAuth auth;
-
     private AwesomeValidation awesomeValidation;
 
     @Override
@@ -99,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this, "Log In Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 progBar.setVisibility(View.GONE);
             }

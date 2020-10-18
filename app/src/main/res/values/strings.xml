@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RaterNet-ISP-App</string>
+    <string name="app_name">RaterNet</string>
     <string name="welcome">Welcome to RaterNet</string>
     <string name="tagline">Net.Set.Gooo!</string>
     <string name="notauser">Not a User? Register</string>

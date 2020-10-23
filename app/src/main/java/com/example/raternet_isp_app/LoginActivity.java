@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.hardware.usb.UsbRequest;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -20,6 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -30,6 +35,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public ProgressBar progBar;
     private FirebaseAuth auth;
     private AwesomeValidation awesomeValidation;
+    private FirebaseDatabase firebaseDatabase;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
-                    //Add user details here.
-
+                    //Add user details here
                     Toast.makeText(LoginActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 }

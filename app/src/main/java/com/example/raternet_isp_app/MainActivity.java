@@ -9,17 +9,28 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     public Button btnLogin;
     public Button btnRegister;
+    public FirebaseAuth firebaseAuth;
+    public FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser!=null){
+            startActivity(new Intent(MainActivity.this,MainActivity2.class));
+            this.finish();
+        }
 
+        setContentView(R.layout.activity_main);
         btnLogin=findViewById(R.id.btnLogin);
         btnRegister=findViewById(R.id.btnRegister);
 

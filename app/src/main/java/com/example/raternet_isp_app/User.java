@@ -5,7 +5,8 @@ public class User
     private String emailId=null;
     private String firstName=null;
     private String lastName=null;
-    private String Uid=null;
+    private String photoURL = null;
+    private String phoneNumber = null;
 
     public User() {}
 
@@ -16,9 +17,15 @@ public class User
         this.lastName=lname;
     }
 
-    public String getUid() {
-        return Uid;
+
+    public User(String emailId, String firstName, String lastName, String photoURL, String phoneNumber) {
+        this.emailId = emailId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.photoURL = photoURL;
+        this.phoneNumber = phoneNumber;
     }
+
 
     public String getEmailId() {
         return emailId;
@@ -30,6 +37,22 @@ public class User
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setEmailId(String emailId) {
@@ -44,7 +67,4 @@ public class User
         this.lastName = lastName;
     }
 
-    public void setUid(String uid) {
-        Uid = uid;
-    }
 }

@@ -13,16 +13,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Hello"
-        android:textSize="30dp"/>
-
+        android:text="Welcome"
+        android:id="@+id/txtHello"
+        android:textSize="30sp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_margin="10sp"
         android:text="logout"/>
 
 </LinearLayout>

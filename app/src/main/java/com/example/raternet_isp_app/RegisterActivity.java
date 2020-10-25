@@ -33,10 +33,10 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     public EditText edtRegEmailId;
-    public EditText edtRegFirstName;
-    public EditText edtRegLastName;
+    public EditText edtRegName;
     public EditText edtRegPass;
     public EditText edtRegVerifyPass;
+    public EditText edtRegPhoneNumber;
     public Button btnReg,setProfilePic;
     public ImageView imageView;
     public TextView txtRegAlreadyUser;
@@ -54,10 +54,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
         edtRegEmailId=findViewById(R.id.edtRegEmailId);
-        edtRegFirstName=findViewById(R.id.edtRegFirstName);
-        edtRegLastName=findViewById(R.id.edtRegLastName);
+        edtRegName=findViewById(R.id.edtRegName);
         edtRegPass=findViewById(R.id.edtRegPass);
         edtRegVerifyPass=findViewById(R.id.edtRegVerifyPass);
+        edtRegPhoneNumber=findViewById(R.id.edtRegPhoneNumber);
+
         btnReg=findViewById(R.id.btnReg);
         txtRegAlreadyUser=findViewById(R.id.txtRegAlreadyUser);
         progBar=findViewById(R.id.progBar);
@@ -69,8 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
 
         awesomeValidation.addValidation(this, R.id.edtRegEmailId, Patterns.EMAIL_ADDRESS, R.string.emailerror);
-        awesomeValidation.addValidation(this,R.id.edtRegFirstName, RegexTemplate.NOT_EMPTY,R.string.firstnamerror);
-        awesomeValidation.addValidation(this,R.id.edtRegLastName,RegexTemplate.NOT_EMPTY,R.string.lastnamerror);
+        awesomeValidation.addValidation(this,R.id.edtRegName, RegexTemplate.NOT_EMPTY,R.string.namerror);
         awesomeValidation.addValidation(this,R.id.edtRegPass,RegexTemplate.NOT_EMPTY,R.string.passerror);
         awesomeValidation.addValidation(this,R.id.edtRegVerifyPass,RegexTemplate.NOT_EMPTY,R.string.passerror);
 
@@ -96,8 +96,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             progBar.setVisibility(View.VISIBLE);
 
                             final String email=edtRegEmailId.getText().toString().trim();
-                            final String fname=edtRegFirstName.getText().toString().trim();
-                            final String lname=edtRegLastName.getText().toString().trim();
+                            final String name=edtRegName.getText().toString().trim();
+                            final String phNumber=edtRegPhoneNumber.getText().toString().trim();
                             String pass=edtRegPass.getText().toString().trim();
 
                             auth.createUserWithEmailAndPassword(email,pass)
@@ -106,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if(task.isSuccessful())
                                             {
-                                                final User user=new User(email,fname,lname);
+                                                final User user=new User(email,name,phNumber);
 
                                                 FirebaseDatabase.getInstance().getReference("Users")
                                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -118,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                             progBar.setVisibility(View.GONE);
                                                             Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                                                             startActivity(new Intent(RegisterActivity.this,MainActivity.class));
+                                                            finish();
                                                         }
                                                         else
                                                         {
@@ -154,6 +155,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case R.id.txtRegAlreadyUser:
                 Toast.makeText(this, "Redirecting to Login Page", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                this.finish();
                 break;
 
             case R.id.ProfilePic:

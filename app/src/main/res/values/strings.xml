@@ -8,13 +8,13 @@
     <string name="enter_email">Enter Email</string>
     <string name="enter_pass">Enter Password</string>
     <string name="verify_pass">Verify Password</string>
-    <string name="enter_fname">Enter First Name</string>
-    <string name="enter_lname">Enter Last Name</string>
+    <string name="enter_name">Enter Your Name</string>
+    <string name="enter_phno">Enter Phone Number</string>
     <string name="already_user">Already a User? Log in</string>
     <string name="emailerror">Enter valid email</string>
-    <string name="firstnamerror">Enter valid First Name</string>
-    <string name="lastnamerror">Enter valid Last Name</string>
+    <string name="namerror">Enter a valid Name</string>
     <string name="passerror">Enter valid password</string>
     <string name="verifypasserror">Passwords don\'t match</string>
+    <string name="upload_pro_pic">Tap to Upload your Profile Picture</string>
 
 </resources>

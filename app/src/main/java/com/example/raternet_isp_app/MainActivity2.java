@@ -25,8 +25,6 @@ public class MainActivity2 extends AppCompatActivity {
     public FirebaseAuth firebaseAuth;
     public FirebaseUser firebaseUser;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +46,11 @@ public class MainActivity2 extends AppCompatActivity {
                 String phNo = (String) dataSnapshot.child("phoneNumber").getValue();
                 String email = (String) dataSnapshot.child("emailId").getValue();
 
-                String[] names=UserName.split(" ");
+                CurrentUser.USER_EMAIL=email;
+                CurrentUser.USER_NAME=UserName;
+                CurrentUser.USER_PHNO=phNo;
+
+                String[] names=CurrentUser.USER_NAME.split(" ");
 
                 txtHello.setText("Hello " + names[0]);
             }

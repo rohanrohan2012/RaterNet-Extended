@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     //Add user details here
                     Toast.makeText(LoginActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
+                    //fetch user object and store into shared pref, pass object to main screen
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 }
                 else

@@ -32,6 +32,6 @@ public class SaveSharedPreferences {
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.clear(); //clear all stored data
-        editor.commit();
+        editor.apply();
     }
 }

@@ -17,12 +17,14 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -35,8 +37,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public ProgressBar progBar;
     private FirebaseAuth auth;
     private AwesomeValidation awesomeValidation;
-    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private User user;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +100,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(task.isSuccessful())
                 {
                     //Add user details here
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                    databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String UserName = (String) dataSnapshot.child("userName").getValue();
+                            String phNo = (String) dataSnapshot.child("phoneNumber").getValue();
+                            String email = (String) dataSnapshot.child("emailId").getValue();
+                            user = new User(email,UserName,phNo);
+                            SaveSharedPreferences.setUser(LoginActivity.this,user);
+                            intent = new Intent(LoginActivity.this,MainActivity.class);
+                            Toast.makeText(LoginActivity.this, "Successfully Logged In" + user.getUserName(), Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        }
 
-
-                    Toast.makeText(LoginActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
-                    //fetch user object and store into shared pref, pass object to main screen
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(LoginActivity.this, "Failed to fetch user", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 else
                 {

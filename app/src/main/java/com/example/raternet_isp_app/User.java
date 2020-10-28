@@ -1,6 +1,8 @@
 package com.example.raternet_isp_app;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
     private String emailId=null;
     private String userName=null;

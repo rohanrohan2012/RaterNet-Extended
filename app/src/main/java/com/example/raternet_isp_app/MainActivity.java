@@ -17,16 +17,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public Button btnLogin;
     public Button btnRegister;
-    public FirebaseAuth firebaseAuth;
-    public FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
 
-        if(firebaseUser!=null){
+        if(SaveSharedPreferences.getUser(MainActivity.this)!=null){
             startActivity(new Intent(MainActivity.this,MainActivity2.class));
             this.finish();
         }

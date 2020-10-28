@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +23,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private Button button;
     private TextView txtHello;
-
+    private User currentUser;
     public FirebaseAuth firebaseAuth;
     public FirebaseUser firebaseUser;
 
@@ -29,43 +31,17 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+        firebaseAuth = FirebaseAuth.getInstance();
         button = findViewById(R.id.btnLogout);
         txtHello=findViewById(R.id.txtHello);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-
-        String userID=firebaseUser.getUid();
-        
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String UserName = (String) dataSnapshot.child("userName").getValue();
-                String phNo = (String) dataSnapshot.child("phoneNumber").getValue();
-                String email = (String) dataSnapshot.child("emailId").getValue();
-
-                CurrentUser.userEmail=email;
-                CurrentUser.userName=UserName;
-                CurrentUser.userPhno=phNo;
-
-                String[] names=CurrentUser.userName.split(" ");
-
-                txtHello.setText("Hello " + names[0]);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
-            }
-        });
-
+        currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
+        txtHello.setText("Welcome " + currentUser.getUserName());
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firebaseAuth.signOut();
+                SaveSharedPreferences.clearUser(MainActivity2.this);
                 startActivity(new Intent(MainActivity2.this,MainActivity.class));
             }
         });

@@ -47,11 +47,11 @@ public class MainActivity2 extends AppCompatActivity {
                 String phNo = (String) dataSnapshot.child("phoneNumber").getValue();
                 String email = (String) dataSnapshot.child("emailId").getValue();
 
-                CurrentUser.USER_EMAIL=email;
-                CurrentUser.USER_NAME=UserName;
-                CurrentUser.USER_PHNO=phNo;
+                CurrentUser.userEmail=email;
+                CurrentUser.userName=UserName;
+                CurrentUser.userPhno=phNo;
 
-                String[] names=CurrentUser.USER_NAME.split(" ");
+                String[] names=CurrentUser.userName.split(" ");
 
                 txtHello.setText("Hello " + names[0]);
             }

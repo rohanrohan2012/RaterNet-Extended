@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".IspRatingsActivity"></activity>
-        <activity android:name=".IspDetailsActivity" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity2">
@@ -17,6 +18,25 @@
         android:gravity="center"
         android:text="Welcome"
         android:textSize="30sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/ISP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="My ISP"
+        android:textSize="20sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:text="My Location"
+        android:textSize="20sp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnWriteReview"

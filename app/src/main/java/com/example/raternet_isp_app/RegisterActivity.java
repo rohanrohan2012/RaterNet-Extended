@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.View;
@@ -117,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                         {
                                                             progBar.setVisibility(View.GONE);
                                                             Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                                                            startActivity(new Intent(RegisterActivity.this,MainActivity.class));
+                                                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                                                             finish();
                                                         }
                                                         else

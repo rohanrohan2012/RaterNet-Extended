@@ -35,7 +35,10 @@ public class MainActivity2 extends AppCompatActivity {
         button = findViewById(R.id.btnLogout);
         txtHello=findViewById(R.id.txtHello);
         currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
-        txtHello.setText("Welcome " + currentUser.getUserName());
+
+        String[] names=currentUser.getUserName().split(" ");
+
+        txtHello.setText("Welcome " + names[0]);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

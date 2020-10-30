@@ -144,6 +144,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+
+    @Override
+    public void onBackPressed ()
+    {
+        this.finishAffinity();
+    }
 }
 //Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
 /*

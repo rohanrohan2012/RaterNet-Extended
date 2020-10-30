@@ -16,5 +16,6 @@
     <string name="passerror">Enter valid password</string>
     <string name="verifypasserror">Passwords don\'t match</string>
     <string name="upload_pro_pic">Tap to Upload your Profile Picture</string>
+    <string name="submit">Submit</string>
 
 </resources>

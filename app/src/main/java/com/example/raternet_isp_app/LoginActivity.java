@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             user = new User(email,UserName,phNo);
                             SaveSharedPreferences.setUser(LoginActivity.this,user);
                             intent = new Intent(LoginActivity.this,MainActivity.class);
-                            Toast.makeText(LoginActivity.this, "Successfully Logged In " + user.getUserName().split(" ")[0], Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Successfully Logged In ", Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                         }
 

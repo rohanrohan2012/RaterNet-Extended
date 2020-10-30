@@ -17,12 +17,21 @@ import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.endpoints.GetDataService;
 import com.example.raternet_isp_app.models.User;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
+import com.example.raternet_isp_app.network.RetrofitClientInstance2;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.JsonObject;
 
-public class MainActivity2 extends AppCompatActivity {
+import org.json.JSONObject;
 
-    private Button button;
-    private TextView txtHello,ISPView,LocView;
+public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
+
+    private Button btnLogout;
+    private Button btnWriteReview;
+    private Button btnUpdateReview;
+    private Button btnSearchNetwork;
+    private Button btnFeedbackForReview;
+
+    private TextView txtHello, ISPView, LocView;
     private User currentUser;
     public FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -33,43 +42,88 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         firebaseAuth = FirebaseAuth.getInstance();
-        button = findViewById(R.id.btnLogout);
-        txtHello=findViewById(R.id.txtHello);
+
+        btnLogout = findViewById(R.id.btnLogout);
+        btnWriteReview = findViewById(R.id.btnWriteReview);
+        btnUpdateReview = findViewById(R.id.btnUpdateReview);
+        btnSearchNetwork = findViewById(R.id.btnSearchNetwork);
+        btnFeedbackForReview = findViewById(R.id.btnFeedbackForReview);
+
+        btnLogout.setOnClickListener(this);
+        btnWriteReview.setOnClickListener(this);
+        btnUpdateReview.setOnClickListener(this);
+        btnSearchNetwork.setOnClickListener(this);
+        btnFeedbackForReview.setOnClickListener(this);
+
+        txtHello = findViewById(R.id.txtHello);
         ISPView = findViewById(R.id.ISP);
         currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
 
-        String[] names=currentUser.getUserName().split(" ");
-
+        String[] names = currentUser.getUserName().split(" ");
         txtHello.setText("Welcome " + names[0]);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
-                SaveSharedPreferences.clearUser(MainActivity2.this);
-                startActivity(new Intent(MainActivity2.this,MainActivity.class));
-            }
-        });
 
         fetchIPInfo();
     }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnWriteReview:
+                Toast.makeText(this, "Entering Isp-Ratings", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity2.this, IspRatingsActivity.class));
+                this.finish();
+                break;
+
+            case R.id.btnLogout:
+                firebaseAuth.signOut();
+                SaveSharedPreferences.clearUser(MainActivity2.this);
+                startActivity(new Intent(MainActivity2.this, MainActivity.class));
+                this.finish();
+                break;
+        }
+    }
+
     public void fetchIPInfo(){
         progressDialog = new ProgressDialog(MainActivity2.this);
         progressDialog.setMessage("Getting your Network Info..."); // show progess dialog till server responds
         progressDialog.show();
-        GetDataService serviceIP= RetrofitClientInstance.getRetrofitInstance(this,0)
+        GetDataService serviceIP= RetrofitClientInstance.getRetrofitInstance()
                 .create(GetDataService.class);
-        Call<String> call = serviceIP.getIP();
-        call.enqueue(new Callback<String>() {
+        Call<String> callIP = serviceIP.getIP();
+        callIP.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                progressDialog.dismiss();
                 try {
                     ip = response.body();
-                    ISPView.setText(ip);
+                    GetDataService serviceISP= RetrofitClientInstance2.getRetrofitInstance()
+                            .create(GetDataService.class);
+                    Call<JsonObject> callISP = serviceISP.getIPInfo(ip);
+                    callISP.enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            progressDialog.dismiss();
+                            try{
+                                JsonObject jsonObject = response.body();
+                                ISPView.setText(jsonObject.get("isp").getAsString());
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                ISPView.setText("Json Error");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity2.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.i("ISP Error",t.getMessage());
+                        }
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ISPView.setText("Json Error");
+                    Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    ISPView.setText("IP Error");
                 }
             }
 
@@ -77,13 +131,14 @@ public class MainActivity2 extends AppCompatActivity {
             public void onFailure(Call<String> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(MainActivity2.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.i("Error",t.getMessage());
+                Log.i("IP Error",t.getMessage());
             }
         });
     }
 }
 //Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
 /*
+RESPONSES:
 * D/OkHttp: <-- 200 OK https://api.ipify.org/ (1156ms)
 D/OkHttp: Server: Cowboy
     Connection: keep-alive
@@ -94,4 +149,24 @@ D/OkHttp: Server: Cowboy
     Via: 1.1 vegur
 D/OkHttp: 116.74.187.92
     <-- END HTTP (13-byte body)
+    *
+    *  I/ISP Error: CLEARTEXT communication to ip-api.com not permitted by network security policy
+    *
+    * D/OkHttp: <-- 200 OK http://ip-api.com/json/116.74.187.92 (538ms)
+D/OkHttp: Date: Fri, 30 Oct 2020 10:56:57 GMT
+    Content-Type: application/json; charset=utf-8
+D/OkHttp: Content-Length: 339
+    Access-Control-Allow-Origin: *
+    X-Ttl: 60
+    X-Rl: 44
+D/OkHttp: {"status":"success","country":"India","countryCode":"IN","region":"MH",
+"regionName":"Maharashtra","city":"Pune","zip":"411038","lat":18.5196,"lon":73.8554,
+"timezone":"Asia/Kolkata","isp":"Hathway IP over Cable Internet Access",
+"org":"Hathway Cable and Datacom Pvt Ltd","as":"AS17488 Hathway IP Over Cable Internet",
+"query":"116.74.187.92"}
+D/OkHttp: <-- END HTTP (339-byte body)
 * */
+
+
+
+

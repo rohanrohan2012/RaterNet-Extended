@@ -15,13 +15,9 @@ import android.widget.Toast;
 
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.endpoints.GetDataService;
-import com.example.raternet_isp_app.models.IP;
+import com.example.raternet_isp_app.models.User;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -63,14 +59,14 @@ public class MainActivity2 extends AppCompatActivity {
         progressDialog.show();
         GetDataService serviceIP= RetrofitClientInstance.getRetrofitInstance(this,0)
                 .create(GetDataService.class);
-        Call<IP> call = serviceIP.getIP();
-        call.enqueue(new Callback<IP>() {
+        Call<String> call = serviceIP.getIP();
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<IP> call, Response<IP> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 progressDialog.dismiss();
                 try {
-                    IP ip = response.body();
-                    ISPView.setText(ip.getIP());
+                    ip = response.body();
+                    ISPView.setText(ip);
                 } catch (Exception e) {
                     e.printStackTrace();
                     ISPView.setText("Json Error");
@@ -78,7 +74,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<IP> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(MainActivity2.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("Error",t.getMessage());
@@ -87,3 +83,15 @@ public class MainActivity2 extends AppCompatActivity {
     }
 }
 //Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+/*
+* D/OkHttp: <-- 200 OK https://api.ipify.org/ (1156ms)
+D/OkHttp: Server: Cowboy
+    Connection: keep-alive
+    Content-Type: text/plain
+    Vary: Origin
+    Date: Fri, 30 Oct 2020 07:49:25 GMT
+    Content-Length: 13
+    Via: 1.1 vegur
+D/OkHttp: 116.74.187.92
+    <-- END HTTP (13-byte body)
+* */

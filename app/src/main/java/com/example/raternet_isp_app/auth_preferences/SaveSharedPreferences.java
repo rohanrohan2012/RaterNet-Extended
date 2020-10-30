@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.raternet_isp_app.User;
+import com.example.raternet_isp_app.models.User;
 
 import com.google.gson.Gson;
 

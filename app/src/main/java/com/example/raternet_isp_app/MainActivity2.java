@@ -1,27 +1,17 @@
 package com.example.raternet_isp_app;
 import androidx.appcompat.app.AppCompatActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
-import com.example.raternet_isp_app.endpoints.GetDataService;
-import com.example.raternet_isp_app.models.IP;
-import com.example.raternet_isp_app.network.RetrofitClientInstance;
+import com.example.raternet_isp_app.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,15 +52,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         String[] names = currentUser.getUserName().split(" ");
 
         txtHello.setText("Welcome " + names[0]);
-
-//        btnLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                firebaseAuth.signOut();
-//                SaveSharedPreferences.clearUser(MainActivity2.this);
-//                startActivity(new Intent(MainActivity2.this,MainActivity.class));
-//            }
-//        });
 
 //        fetchIPInfo();
     }

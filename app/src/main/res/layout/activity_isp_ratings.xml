@@ -71,6 +71,7 @@
             android:textSize="18sp"/>
 
         <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/RbSpeed"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="15sp"
@@ -101,6 +102,7 @@
             android:textSize="18sp"/>
 
         <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/RbPrice"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="15sp"
@@ -131,6 +133,7 @@
             android:textSize="18sp"/>
 
         <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/RbService"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="15sp"
@@ -160,6 +163,7 @@
             android:textSize="18sp"/>
 
         <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/RbOverall"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="15sp"
@@ -171,6 +175,7 @@
     </RelativeLayout>
 
     <EditText
+        android:id="@+id/txtFeedback"
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:layout_gravity="center"
@@ -186,7 +191,7 @@
         android:layout_height="0sp"
         android:layout_gravity="center"
         android:layout_weight="10"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnSubmitReview"

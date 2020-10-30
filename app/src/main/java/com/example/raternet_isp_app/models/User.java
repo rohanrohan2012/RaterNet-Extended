@@ -1,4 +1,4 @@
-package com.example.raternet_isp_app;
+package com.example.raternet_isp_app.models;
 
 import java.io.Serializable;
 

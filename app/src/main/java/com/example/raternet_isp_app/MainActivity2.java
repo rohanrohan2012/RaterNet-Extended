@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,16 @@ import android.widget.Toast;
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.raternet_isp_app.endpoints.GetDataService;
+import com.example.raternet_isp_app.network.RetrofitClientInstance;
+import com.example.raternet_isp_app.network.RetrofitClientInstance2;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,12 +61,10 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
 
         String[] names = currentUser.getUserName().split(" ");
-
         txtHello.setText("Welcome " + names[0]);
 
-//        fetchIPInfo();
+        fetchIPInfo();
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -73,36 +82,92 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    public void fetchIPInfo(){
+        progressDialog = new ProgressDialog(MainActivity2.this);
+        progressDialog.setMessage("Getting your Network Info..."); // show progess dialog till server responds
+        progressDialog.show();
+        GetDataService serviceIP= RetrofitClientInstance.getRetrofitInstance()
+                .create(GetDataService.class);
+        Call<String> callIP = serviceIP.getIP();
+        callIP.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    ip = response.body();
+                    GetDataService serviceISP= RetrofitClientInstance2.getRetrofitInstance()
+                            .create(GetDataService.class);
+                    Call<JsonObject> callISP = serviceISP.getIPInfo(ip);
+                    callISP.enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            progressDialog.dismiss();
+                            try{
+                                JsonObject jsonObject = response.body();
+                                ISPView.setText(jsonObject.get("isp").getAsString());
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                ISPView.setText("Json Error");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity2.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.i("ISP Error",t.getMessage());
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    ISPView.setText("IP Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(MainActivity2.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.i("IP Error",t.getMessage());
+            }
+        });
+    }
 }
-
-
-//    public void fetchIPInfo(){
-//        progressDialog = new ProgressDialog(MainActivity2.this);
-//        progressDialog.setMessage("Getting your Network Info..."); // show progess dialog till server responds
-//        progressDialog.show();
-//        GetDataService serviceIP= RetrofitClientInstance.getRetrofitInstance(this,0)
-//                .create(GetDataService.class);
-//        Call<IP> call = serviceIP.getIP();
-//        call.enqueue(new Callback<IP>() {
-//            @Override
-//            public void onResponse(Call<IP> call, Response<IP> response) {
-//                progressDialog.dismiss();
-//                try {
-//                    IP ip = response.body();
-//                    ISPView.setText(ip.getIP());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    ISPView.setText("Json Error");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<IP> call, Throwable t) {
-//                progressDialog.dismiss();
-//                Toast.makeText(MainActivity2.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.i("Error",t.getMessage());
-//            }
-//        });
-//    }
-//}
 //Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+/*
+RESPONSES:
+* D/OkHttp: <-- 200 OK https://api.ipify.org/ (1156ms)
+D/OkHttp: Server: Cowboy
+    Connection: keep-alive
+    Content-Type: text/plain
+    Vary: Origin
+    Date: Fri, 30 Oct 2020 07:49:25 GMT
+    Content-Length: 13
+    Via: 1.1 vegur
+D/OkHttp: 116.74.187.92
+    <-- END HTTP (13-byte body)
+    *
+    *  I/ISP Error: CLEARTEXT communication to ip-api.com not permitted by network security policy
+    *
+    * D/OkHttp: <-- 200 OK http://ip-api.com/json/116.74.187.92 (538ms)
+D/OkHttp: Date: Fri, 30 Oct 2020 10:56:57 GMT
+    Content-Type: application/json; charset=utf-8
+D/OkHttp: Content-Length: 339
+    Access-Control-Allow-Origin: *
+    X-Ttl: 60
+    X-Rl: 44
+D/OkHttp: {"status":"success","country":"India","countryCode":"IN","region":"MH",
+"regionName":"Maharashtra","city":"Pune","zip":"411038","lat":18.5196,"lon":73.8554,
+"timezone":"Asia/Kolkata","isp":"Hathway IP over Cable Internet Access",
+"org":"Hathway Cable and Datacom Pvt Ltd","as":"AS17488 Hathway IP Over Cable Internet",
+"query":"116.74.187.92"}
+D/OkHttp: <-- END HTTP (339-byte body)
+* */
+
+
+
+

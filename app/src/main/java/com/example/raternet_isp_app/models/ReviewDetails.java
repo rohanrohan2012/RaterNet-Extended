@@ -1,35 +1,33 @@
 package com.example.raternet_isp_app.models;
 
-public class ReviewDetails
-{
-    private String ISP_Name=null;
-    private String MAP_Latitude=null;
-    private String MAP_Longitude=null;
+public class ReviewDetails {
+    private String ISP_Name = null;
+    private String MAP_Latitude = null;
+    private String MAP_Longitude = null;
 
-    private String UserEmail=null;
+    private String UserEmail = null;
 
-    private String type=null;
+    private String type = null;
 
-    private String priceRating=null;
-    private String speedRating=null;
-    private String serviceRating=null;
-    private String overallRating=null;
+    private String priceRating = null;
+    private String speedRating = null;
+    private String serviceRating = null;
+    private String overallRating = null;
 
-    private String feedback=null;
+    private String feedback = null;
 
     public ReviewDetails() {}
 
-    public ReviewDetails(String ISP_Name,String MAP_Latitude, String MAP_Longitude, String UserEmail,String type, String speedRating,String priceRating,String serviceRating,String overallRating,String feedback)
-    {
-        this.ISP_Name=ISP_Name;
-        this.MAP_Latitude=MAP_Latitude;
-        this.MAP_Longitude=MAP_Longitude;
-        this.UserEmail=UserEmail;
-        this.type=type;
-        this.priceRating=priceRating;
-        this.speedRating=speedRating;
-        this.serviceRating=serviceRating;
-        this.feedback=feedback;
+    public ReviewDetails(String ISP_Name, String MAP_Latitude, String MAP_Longitude, String UserEmail, String type, String speedRating, String priceRating, String serviceRating, String overallRating, String feedback) {
+        this.ISP_Name = ISP_Name;
+        this.MAP_Latitude = MAP_Latitude;
+        this.MAP_Longitude = MAP_Longitude;
+        this.UserEmail = UserEmail;
+        this.type = type;
+        this.priceRating = priceRating;
+        this.speedRating = speedRating;
+        this.serviceRating = serviceRating;
+        this.feedback = feedback;
     }
 
     public String getFeedback() {
@@ -111,5 +109,4 @@ public class ReviewDetails
     public void setUserEmail(String userEmail) {
         UserEmail = userEmail;
     }
-
 }

@@ -1,19 +1,19 @@
 package com.example.raternet_isp_app.endpoints;
 
-import com.example.raternet_isp_app.models.IP;
 import com.example.raternet_isp_app.models.IPInfo;
-
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 
 public interface GetDataService {
-    @GET("")
-    Call<IPInfo> getIPInfo();
+    @GET("/json/{url}")
+    @Headers("Content-Type: application/json")
+    Call<JsonObject> getIPInfo(@Path("url") String url);
 
     @GET("/")
-    @Headers("Content-Type: application/json")
-    Call<IP> getIP();
+    @Headers("Content-Type: text/plain")
+    Call<String> getIP();
 }

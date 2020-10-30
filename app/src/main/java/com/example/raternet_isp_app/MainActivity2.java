@@ -18,7 +18,6 @@ import com.example.raternet_isp_app.network.RetrofitClientInstance;
 import com.example.raternet_isp_app.network.RetrofitClientInstance2;
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;

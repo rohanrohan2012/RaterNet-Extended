@@ -27,6 +27,7 @@ public class ReviewDetails {
         this.priceRating = priceRating;
         this.speedRating = speedRating;
         this.serviceRating = serviceRating;
+        this.overallRating=overallRating;
         this.feedback = feedback;
     }
 

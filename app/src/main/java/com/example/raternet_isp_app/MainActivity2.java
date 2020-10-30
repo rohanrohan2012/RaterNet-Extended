@@ -60,9 +60,15 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         ISPView = findViewById(R.id.ISP);
         currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
 
+        //Setting email in Constants.
+        Constants.UserEmail=currentUser.getEmailId();
+
+        //Setting Name on Main Screen.
         String[] names = currentUser.getUserName().split(" ");
         txtHello.setText("Welcome " + names[0]);
 
+
+        //Calling API to GET ISP through IP-Address
         fetchIPInfo();
     }
     @Override
@@ -104,6 +110,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                             progressDialog.dismiss();
                             try{
                                 JsonObject jsonObject = response.body();
+                                //Setting ISP in Constants
+                                Constants.ISP_Name=jsonObject.get("isp").getAsString();
                                 ISPView.setText(jsonObject.get("isp").getAsString());
                             }
                             catch (Exception e){

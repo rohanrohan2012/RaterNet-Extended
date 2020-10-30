@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -24,7 +23,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.CompletionService;
+
 
 public class IspRatingsActivity extends AppCompatActivity {
 
@@ -122,8 +124,11 @@ public class IspRatingsActivity extends AppCompatActivity {
                 //Setting Feedback
                 Constants.feedback=txtFeedback.getText().toString().trim();
 
-                Toast.makeText(IspRatingsActivity.this, "Feedback=> "+Constants.feedback, Toast.LENGTH_SHORT).show();
-                Toast.makeText(IspRatingsActivity.this, "ISP=> "+Constants.ISP_Name, Toast.LENGTH_SHORT).show();
+                //Setting Date
+                Date date=new Date();
+                SimpleDateFormat curDate=new SimpleDateFormat("dd/MM/yyyy");
+                String getDate=curDate.format(date);
+                Constants.reviewDate=getDate;
 
                 boolean validateFeedback=awesomeValidation.validate();
 
@@ -144,6 +149,7 @@ public class IspRatingsActivity extends AppCompatActivity {
                             final String MAP_Longitude = "20";
 
                             final String UserEmail = Constants.UserEmail;
+                            final String reviewDate=Constants.reviewDate;
 
                             final String type = Constants.type;
 
@@ -156,7 +162,7 @@ public class IspRatingsActivity extends AppCompatActivity {
 
                             //Adding Review
 
-                            final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Latitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback);
+                            final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Latitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
 
                             FirebaseDatabase.getInstance().getReference("Reviews").
                                     push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -205,5 +211,12 @@ public class IspRatingsActivity extends AppCompatActivity {
         typeFlag=true;
 
         Toast.makeText(this, "Selected "+RdoBtnType.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed ()
+    {
+        startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+        this.finish();
     }
 }

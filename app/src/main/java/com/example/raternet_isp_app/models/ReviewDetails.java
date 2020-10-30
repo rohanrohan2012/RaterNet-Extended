@@ -5,7 +5,9 @@ public class ReviewDetails {
     private String MAP_Latitude = null;
     private String MAP_Longitude = null;
 
+
     private String UserEmail = null;
+    private String reviewDate=null;
 
     private String type = null;
 
@@ -18,7 +20,7 @@ public class ReviewDetails {
 
     public ReviewDetails() {}
 
-    public ReviewDetails(String ISP_Name, String MAP_Latitude, String MAP_Longitude, String UserEmail, String type, String speedRating, String priceRating, String serviceRating, String overallRating, String feedback) {
+    public ReviewDetails(String ISP_Name, String MAP_Latitude, String MAP_Longitude, String UserEmail, String type, String speedRating, String priceRating, String serviceRating, String overallRating, String feedback,String reviewDate) {
         this.ISP_Name = ISP_Name;
         this.MAP_Latitude = MAP_Latitude;
         this.MAP_Longitude = MAP_Longitude;
@@ -29,6 +31,11 @@ public class ReviewDetails {
         this.serviceRating = serviceRating;
         this.overallRating=overallRating;
         this.feedback = feedback;
+        this.reviewDate=reviewDate;
+    }
+
+    public String getReviewDate() {
+        return reviewDate;
     }
 
     public String getFeedback() {
@@ -109,5 +116,9 @@ public class ReviewDetails {
 
     public void setUserEmail(String userEmail) {
         UserEmail = userEmail;
+    }
+
+    public void setReviewDate(String reviewDate) {
+        this.reviewDate = reviewDate;
     }
 }

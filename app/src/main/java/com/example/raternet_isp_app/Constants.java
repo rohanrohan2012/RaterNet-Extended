@@ -6,6 +6,7 @@ public class Constants
     public static String MAP_Latitude=null;
     public static String MAP_Longitude=null;
 
+    public static String reviewDate=null;
     public static String UserEmail=null;
 
     public static String type=null;

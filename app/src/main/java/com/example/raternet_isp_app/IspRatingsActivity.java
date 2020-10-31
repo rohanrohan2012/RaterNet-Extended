@@ -145,8 +145,8 @@ public class IspRatingsActivity extends AppCompatActivity {
 
                             //Enter Review here
                             final String ISP_Name = Constants.ISP_Name;
-                            final String MAP_Latitude = "20";
-                            final String MAP_Longitude = "20";
+                            final String MAP_Latitude = Constants.MAP_Latitude;
+                            final String MAP_Longitude = Constants.MAP_Longitude;
 
                             final String UserEmail = Constants.UserEmail;
                             final String reviewDate=Constants.reviewDate;
@@ -162,7 +162,7 @@ public class IspRatingsActivity extends AppCompatActivity {
 
                             //Adding Review
 
-                            final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Latitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
+                            final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Longitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
 
                             FirebaseDatabase.getInstance().getReference("Reviews").
                                     push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {

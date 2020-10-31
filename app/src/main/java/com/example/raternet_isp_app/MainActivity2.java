@@ -123,6 +123,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                                     e.printStackTrace();
                                 }
                                 LocView.setText(displayAdress);
+
+                                //Setting MAP_Latitude and Longitude
                                 Constants.MAP_Latitude = latitude.toString();
                                 Constants.MAP_Longitude = longitude.toString();
                             }
@@ -165,6 +167,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(MainActivity2.this, IspRatingsActivity.class));
                 this.finish();
                 break;
+
+            case R.id.btnUpdateReview:
+                Toast.makeText(this, "Enter Update-Review", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity2.this,UpdateReviewActivity.class));
+                this.finish();
+                break;
+
 
             case R.id.btnLogout:
                 firebaseAuth.signOut();

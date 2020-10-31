@@ -1,8 +1,20 @@
 package com.example.raternet_isp_app;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +24,9 @@ import android.widget.Toast;
 
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.User;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.example.raternet_isp_app.endpoints.GetDataService;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
@@ -19,17 +34,27 @@ import com.example.raternet_isp_app.network.RetrofitClientInstance2;
 import com.google.gson.JsonObject;
 
 
+import java.io.IOException;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity2 extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnLogout;
     private Button btnWriteReview;
     private Button btnUpdateReview;
     private Button btnSearchNetwork;
     private Button btnFeedbackForReview;
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12; // passed back to you on completion to differentiate on request from other
+    private static final String[] LOCATION_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
     private TextView txtHello, ISPView, LocView;
     private User currentUser;
@@ -37,6 +62,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private ProgressDialog progressDialog;
     private String ip = null;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +83,76 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
         txtHello = findViewById(R.id.txtHello);
         ISPView = findViewById(R.id.ISP);
+        LocView = findViewById(R.id.location);
         currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         //Setting email in Constants.
         Constants.UserEmail=currentUser.getEmailId();
-
         //Setting Name on Main Screen.
         String[] names = currentUser.getUserName().split(" ");
         txtHello.setText("Welcome " + names[0]);
 
-
         //Calling API to GET ISP through IP-Address
         fetchIPInfo();
+        getLocationInfo();
+
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void getLocationInfo(){
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+                ==PackageManager.PERMISSION_GRANTED){ // if user has already given permission
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // geocoder converts lat and long coordinates into address fields
+                                Geocoder geocoder = new Geocoder(getApplicationContext());
+                                String displayAdress = "Location";
+                                try {
+                                    Address address = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1).get(0);
+                                    displayAdress = address.getLocality() + "," +
+                                            address.getSubLocality() + "," + address.getPostalCode() + "," + address.getCountryName();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                LocView.setText(displayAdress);
+                            }
+                        }
+                    });
+        }
+        else {
+            requestPermissions(LOCATION_PERMS,MY_PERMISSION_ACCESS_FINE_LOCATION); // request to allow location
+            // request results are returned in onRequestPermissionsResult function
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_ACCESS_FINE_LOCATION:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                   getLocationInfo();
+                }  else {
+                    LocView.setText("Feature Unavailiable..."); // service disabled
+                }
+                return;
+        }
+        // Other 'case' lines to check for other
+        // permissions this app might request.
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -149,6 +232,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     {
         this.finishAffinity();
     }
+
 }
 //Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
 /*

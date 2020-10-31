@@ -111,16 +111,20 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 // geocoder converts lat and long coordinates into address fields
+                                Double latitude = location.getLatitude();
+                                Double longitude = location.getLongitude();
                                 Geocoder geocoder = new Geocoder(getApplicationContext());
                                 String displayAdress = "Location";
                                 try {
-                                    Address address = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1).get(0);
+                                    Address address = geocoder.getFromLocation(latitude,longitude,1).get(0);
                                     displayAdress = address.getLocality() + "," +
                                             address.getSubLocality() + "," + address.getPostalCode() + "," + address.getCountryName();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                                 LocView.setText(displayAdress);
+                                Constants.MAP_Latitude = latitude.toString();
+                                Constants.MAP_Longitude = longitude.toString();
                             }
                         }
                     });

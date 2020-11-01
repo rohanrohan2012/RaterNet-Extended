@@ -20,31 +20,19 @@
         android:text="Welcome"
         android:textSize="30sp"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/ISP"
+    <fragment
+        android:name="com.example.raternet_isp_app.Fragments.ISPInfo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10sp"
-        android:gravity="center"
-        android:text="My ISP"
-        android:background="@drawable/btn_rounded2"
-        android:textSize="15sp"/>
+        android:id="@+id/ispFragment"
+        android:layout_height="wrap_content"/>
+
+    <fragment
+        android:name="com.example.raternet_isp_app.Fragments.LocationService"
+        android:layout_width="wrap_content"
+        android:id="@+id/locationFragment"
+        android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10sp"
-        android:layout_marginBottom="20sp"
-        android:layout_marginTop="20sp"
-        android:gravity="center"
-        android:background="@drawable/btn_rounded3"
-        android:text="My Location"
-        android:textSize="15sp"/>
-
-    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnWriteReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +47,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnUpdateReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +62,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnSearchNetwork"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,7 +77,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnFeedbackForReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

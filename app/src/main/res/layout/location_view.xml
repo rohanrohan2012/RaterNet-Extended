@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="10sp"
+        android:layout_margin="10sp"
+        android:gravity="center"
+        android:background="@drawable/btn_rounded3"
+        android:text="My Location"
+        android:textSize="15sp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

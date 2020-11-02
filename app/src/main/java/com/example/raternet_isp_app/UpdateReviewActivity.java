@@ -29,7 +29,8 @@ public class UpdateReviewActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<ReviewDetails> options =
                 new FirebaseRecyclerOptions.Builder<ReviewDetails>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference().child("Reviews").orderByChild("userEmail").equalTo(Constants.UserEmail), ReviewDetails.class)
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("Reviews").
+                                orderByChild("userEmail").equalTo(Constants.UserEmail), ReviewDetails.class)
                         .build();
 
         adapter=new ReviewViewAdapter(options);

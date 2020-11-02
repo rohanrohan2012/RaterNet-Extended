@@ -1,6 +1,7 @@
 package com.example.raternet_isp_app.Fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -104,6 +105,12 @@ public class LocationService extends Fragment{
         startLocationUpdates();
     }
 
+    @Override
+    public void onStop() {
+        stopLocationUpdates();
+        super.onStop();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -158,15 +165,11 @@ public class LocationService extends Fragment{
         });
     }
 
+    @SuppressLint("MissingPermission")
     public void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (settingsEnabled) {
-                fusedLocationClient.requestLocationUpdates(createLocationRequest(),
-                        this.locationCallback,
-                        Looper.getMainLooper());
-            }
-        }
+        fusedLocationClient.requestLocationUpdates(createLocationRequest(),
+                this.locationCallback,
+                Looper.getMainLooper());
     }
 
     public void stopLocationUpdates() {

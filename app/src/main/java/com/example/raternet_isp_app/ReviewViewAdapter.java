@@ -25,7 +25,6 @@ public class ReviewViewAdapter extends FirebaseRecyclerAdapter<ReviewDetails,Rev
     public ReviewViewAdapter(@NonNull FirebaseRecyclerOptions<ReviewDetails> options)
     {
         super(options);
-
     }
 
     @Override
@@ -34,8 +33,6 @@ public class ReviewViewAdapter extends FirebaseRecyclerAdapter<ReviewDetails,Rev
         holder.ispName.setText(model.getISP_Name());
         holder.typeName.setText(model.getType());
         holder.dateName.setText(model.getReviewDate());
-
-
     }
 
     @NonNull

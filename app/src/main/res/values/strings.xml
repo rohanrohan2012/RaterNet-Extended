@@ -18,5 +18,8 @@
     <string name="upload_pro_pic">Tap to Upload your Profile Picture</string>
     <string name="submit">Submit</string>
     <string name="feedback_error">Enter Feedback</string>
+    <string name="demoisp_text">This is Demo ISP</string>
+    <string name="demotype_text">This is Type of Network</string>
+    <string name="demodate_text">This is Demo Date</string>
 
 </resources>

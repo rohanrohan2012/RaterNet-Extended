@@ -65,7 +65,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         txtHello.setText("Welcome " + names[0]);
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

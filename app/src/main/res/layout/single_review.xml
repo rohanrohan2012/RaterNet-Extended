@@ -3,22 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="5dp"
-    app:cardCornerRadius="5dp"
+    android:elevation="5sp"
+    app:cardCornerRadius="5sp"
+    app:cardBackgroundColor="@color/colorAccent"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:padding="15sp">
 
         <TextView
             android:id="@+id/ispText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
-            android:text="This is Demo ISP"
-            android:textColor="#000"
+            android:text="@string/demoisp_text"
+            android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold"/>
 
@@ -28,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ispText"
             android:layout_marginLeft="10sp"
-            android:text="This is Type of Text"
-            android:textColor="#000"
+            android:text="@string/demotype_text"
+            android:textColor="@color/colorPrimary"
             android:textSize="25sp"/>
 
         <TextView
@@ -38,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/typeText"
             android:layout_marginLeft="10sp"
-            android:text="This is Demo Date"
-            android:textColor="#000"
+            android:text="demodate_text"
+            android:textColor="@color/colorPrimary"
             android:textSize="25sp"/>
 
     </RelativeLayout>

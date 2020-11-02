@@ -6,12 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".UpdateReviewActivity">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Hi!"
-        android:textSize="30sp"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

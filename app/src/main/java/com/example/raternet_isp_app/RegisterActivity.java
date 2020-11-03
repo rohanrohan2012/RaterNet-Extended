@@ -1,6 +1,7 @@
 package com.example.raternet_isp_app;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Patterns;
@@ -30,6 +32,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     public EditText edtRegEmailId;
@@ -41,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public ImageView imageView;
     public TextView txtRegAlreadyUser;
     public ProgressBar progBar;
+    private User user;
     public AlertDialog.Builder dialogBuilder;
     private Uri mImageUri = null;
     private static final int CAMERA_REQUEST_CODE=1;
@@ -106,7 +111,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if(task.isSuccessful())
                                             {
-                                                final User user=new User(email,name,phNumber);
+                                                if(mImageUri==null)
+                                                    user=new User(email,name,phNumber);
+                                                else
+                                                    user = new User(email,name,mImageUri.toString(),phNumber);
 
                                                 FirebaseDatabase.getInstance().getReference("Users")
                                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -192,16 +200,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==CAMERA_REQUEST_CODE && resultCode==RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmap);// set captured image in imageView
-            
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(),
+                    bitmap, "Title", null);
+            mImageUri = Uri.parse(path);
         }
         else {
             mImageUri = data.getData();
+            final int takeFlags = data.getFlags()
+                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            try {
+                this.getContentResolver().takePersistableUriPermission(mImageUri, takeFlags);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
             imageView.setImageURI(mImageUri);// set captured image in imageView
         }
     }

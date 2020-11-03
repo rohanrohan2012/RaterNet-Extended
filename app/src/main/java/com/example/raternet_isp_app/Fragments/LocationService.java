@@ -83,6 +83,7 @@ public class LocationService extends Fragment{
             Address address = geocoder.getFromLocation(latitude,longitude,1).get(0);
             displayAdress = address.getLocality() + "," +
                     address.getSubLocality() + "," + address.getPostalCode() + "," + address.getCountryName();
+            //displayAdress = latitude.toString() +" " + longitude.toString();
             LocView.setText(displayAdress);
             //Toast.makeText(getContext(),displayAdress,Toast.LENGTH_SHORT).show();
         } catch (IOException e) {

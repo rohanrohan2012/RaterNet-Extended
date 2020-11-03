@@ -21,5 +21,7 @@
     <string name="demoisp_text">This is Demo ISP</string>
     <string name="demotype_text">This is Type of Network</string>
     <string name="demodate_text">This is Demo Date</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 
 </resources>

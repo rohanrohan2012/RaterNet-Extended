@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools=”http://schemas.android.com/tools"
+    tools:context=”.MainActivity”>
+
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_profile"
+            android:icon="@drawable/ic_baseline_account_circle_24"
+            android:title="Profile"/>
+    </group>
+
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item android:title="Reviews">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/drawer_update"
+                        android:title="Update Feedbacks"
+                        android:icon="@drawable/ic_baseline_update_24"/>
+                    <item
+                        android:id="@+id/drawer_discuss"
+                        android:title="Discuss"
+                        android:icon="@drawable/ic_baseline_group_24"/>
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+    <group
+        android:id="@+id/group3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_baseline_backspace_24"/>
+    </group>
+</menu>

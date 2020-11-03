@@ -107,7 +107,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String UserName = (String) dataSnapshot.child("userName").getValue();
                             String phNo = (String) dataSnapshot.child("phoneNumber").getValue();
                             String email = (String) dataSnapshot.child("emailId").getValue();
-                            user = new User(email,UserName,phNo);
+                            String uri = (String) dataSnapshot.child("photoURL").getValue();
+
+                            if(uri==null)
+                                user = new User(email,UserName,phNo);
+                            else user = new User(email,UserName,uri,phNo);
+
                             SaveSharedPreferences.setUser(LoginActivity.this,user);
                             intent = new Intent(LoginActivity.this,MainActivity.class);
                             Toast.makeText(LoginActivity.this, "Successfully Logged In ", Toast.LENGTH_SHORT).show();

@@ -3,28 +3,16 @@ package com.example.raternet_isp_app;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.example.raternet_isp_app.endpoints.GetDataService;
-import com.example.raternet_isp_app.network.RetrofitClientInstance;
-import com.example.raternet_isp_app.network.RetrofitClientInstance2;
-import com.google.gson.JsonObject;
-
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener{
 
@@ -76,7 +64,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
             case R.id.btnUpdateReview:
                 Toast.makeText(this, "Enter Update-Review", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity2.this,UpdateReviewActivity.class));
+                startActivity(new Intent(MainActivity2.this, ViewReviewActivity.class));
                 this.finish();
                 break;
 

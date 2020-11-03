@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.raternet_isp_app.adapter.ReviewViewAdapter;
 import com.example.raternet_isp_app.models.ReviewDetails;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class UpdateReviewActivity extends AppCompatActivity {
+public class ViewReviewActivity extends AppCompatActivity {
 
     public RecyclerView recView;
     public ReviewViewAdapter adapter;
@@ -21,7 +22,7 @@ public class UpdateReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_review);
+        setContentView(R.layout.activity_view_review);
 
         recView=findViewById(R.id.recView);
 
@@ -33,7 +34,7 @@ public class UpdateReviewActivity extends AppCompatActivity {
                                 orderByChild("userEmail").equalTo(Constants.UserEmail), ReviewDetails.class)
                         .build();
 
-        adapter=new ReviewViewAdapter(options);
+        adapter=new ReviewViewAdapter(options,this);
 
         recView.setAdapter(adapter);
     }
@@ -53,7 +54,7 @@ public class UpdateReviewActivity extends AppCompatActivity {
     @Override
     public void onBackPressed ()
     {
-        startActivity(new Intent(UpdateReviewActivity.this,MainActivity2.class));
+        startActivity(new Intent(ViewReviewActivity.this,MainActivity2.class));
         this.finish();
     }
 }

@@ -1,6 +1,9 @@
 package com.example.raternet_isp_app.models;
 
-public class ReviewDetails {
+import java.io.Serializable;
+
+public class ReviewDetails implements Serializable
+{
     private String ISP_Name = null;
     private String MAP_Latitude = null;
     private String MAP_Longitude = null;

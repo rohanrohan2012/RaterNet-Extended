@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletionService;
 
 
@@ -32,6 +34,7 @@ public class IspRatingsActivity extends AppCompatActivity {
 
     public FirebaseAuth auth;
 
+    //Insert Review
     public RadioGroup RdoGrpType;
     public RadioButton RdoBtnType;
 
@@ -43,161 +46,311 @@ public class IspRatingsActivity extends AppCompatActivity {
     public RatingBar RbService;
     public RatingBar RbSpeed;
     public RatingBar RbOverall;
+    private ProgressDialog progressDialog;
 
+    //Update Review
+    public ReviewDetails curReview;
+
+    public Button btnUpdateReview;
+
+    public EditText txtUpdateFeedback;
+
+    public RatingBar RbUpdatePrice;
+    public RatingBar RbUpdateService;
+    public RatingBar RbUpdateSpeed;
+    public RatingBar RbUpdateOverall;
+
+    private ProgressDialog progressDialog2;
+
+    //General Required Variables
     public boolean typeFlag=false;
     public boolean priceRatingFlag=false;
     public boolean serviceRatingFlag=false;
     public boolean speedRatingFlag=false;
     public boolean overallRatingFlag=false;
 
-    private ProgressDialog progressDialog;
-
     private AwesomeValidation awesomeValidation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_isp_ratings);
 
-        btnSubmitReview=findViewById(R.id.btnSubmitReview);
+        Intent intent=getIntent();
+        
+        if(intent.hasExtra("CurrentReview"))
+        {
+            setContentView(R.layout.activity_update_isp_ratings);
 
-        txtFeedback=findViewById(R.id.txtFeedback);
+            btnUpdateReview=findViewById(R.id.btnUpdateReview);
 
-        auth= FirebaseAuth.getInstance();
+            txtUpdateFeedback=findViewById(R.id.txtUpdateFeedback);
 
-        awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
+            RbUpdatePrice=findViewById(R.id.RbUpdatePrice);
+            RbUpdateSpeed=findViewById(R.id.RbUpdateSpeed);
+            RbUpdateService=findViewById(R.id.RbUpdateService);
+            RbUpdateOverall=findViewById(R.id.RbUpdateOverall);
 
-        awesomeValidation.addValidation(this,R.id.txtFeedback, RegexTemplate.NOT_EMPTY,R.string.feedback_error);
+            awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
 
-        RdoGrpType=findViewById(R.id.RdoGrpType);
+            awesomeValidation.addValidation(this,R.id.txtUpdateFeedback, RegexTemplate.NOT_EMPTY,R.string.feedback_error);
 
-        RbPrice=findViewById(R.id.RbPrice);
-        RbService=findViewById(R.id.RbService);
-        RbSpeed=findViewById(R.id.RbSpeed);
-        RbOverall=findViewById(R.id.RbOverall);
+            this.curReview=(ReviewDetails)intent.getSerializableExtra("CurrentReview");
 
-        RbPrice.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
-            {
-                priceRatingFlag=true;
-                Constants.priceRating=String.valueOf(rating);
-                Toast.makeText(IspRatingsActivity.this, rating+" Stars for Price.", Toast.LENGTH_SHORT).show();
-            }
-        });
+            RbUpdatePrice.setRating(Float.valueOf(curReview.getPriceRating()));
+            RbUpdateSpeed.setRating(Float.valueOf(curReview.getSpeedRating()));
+            RbUpdateService.setRating(Float.valueOf(curReview.getServiceRating()));
+            RbUpdateOverall.setRating(Float.valueOf(curReview.getOverallRating()));
 
+            txtUpdateFeedback.setText(curReview.getFeedback());
 
-        RbService.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
-            {
-                serviceRatingFlag=true;
-                Constants.serviceRating=String.valueOf(rating);
-                Toast.makeText(IspRatingsActivity.this, rating+" Stars for Service.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        RbSpeed.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
-            {
-                speedRatingFlag=true;
-                Constants.speedRating=String.valueOf(rating);
-                Toast.makeText(IspRatingsActivity.this, rating+" Stars for Speed.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        RbOverall.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
-            {
-                overallRatingFlag=true;
-                Constants.overallRating=String.valueOf(rating);
-                Toast.makeText(IspRatingsActivity.this, rating+" Stars Overall.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnSubmitReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                //Setting Feedback
-                Constants.feedback=txtFeedback.getText().toString().trim();
-
-                //Setting Date
-                Date date=new Date();
-                SimpleDateFormat curDate=new SimpleDateFormat("dd/MM/yyyy");
-                String getDate=curDate.format(date);
-                Constants.reviewDate=getDate;
-
-                boolean validateFeedback=awesomeValidation.validate();
-
-                if(validateFeedback)
+            RbUpdatePrice.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
                 {
-                    if(typeFlag)
+                    priceRatingFlag=true;
+                    Constants.priceRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars for Price.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RbUpdateSpeed.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    serviceRatingFlag=true;
+                    Constants.serviceRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars for Service.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RbUpdateService.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    speedRatingFlag=true;
+                    Constants.speedRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars for Speed.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RbUpdateOverall.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    overallRatingFlag=true;
+                    Constants.overallRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars Overall.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            btnUpdateReview.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    //Setting Feedback
+                    Constants.feedback=txtUpdateFeedback.getText().toString().trim();
+
+                    //Setting Date
+                    Date date=new Date();
+                    SimpleDateFormat curDate=new SimpleDateFormat("dd/MM/yyyy");
+                    String getDate=curDate.format(date);
+                    Constants.reviewDate=getDate;
+
+                    boolean validateFeedback=awesomeValidation.validate();
+
+                    if(validateFeedback)
                     {
-                        if(priceRatingFlag && speedRatingFlag && serviceRatingFlag && overallRatingFlag)
-                        {
-                            //Enabled ProgressDialog
-                            progressDialog = new ProgressDialog(IspRatingsActivity.this);
-                            progressDialog.setMessage("Submitting your Feedback...");
-                            progressDialog.show();
+                        //Enabled ProgressDialog
+                        progressDialog2 = new ProgressDialog(IspRatingsActivity.this);
+                        progressDialog2.setMessage("Updating your Feedback...");
+                        progressDialog2.show();
 
-                            //Enter Review here
-                            final String ISP_Name = Constants.ISP_Name;
-                            final String MAP_Latitude = Constants.MAP_Latitude;
-                            final String MAP_Longitude = Constants.MAP_Longitude;
+                        //Creating Map
+                        Map<String,Object>map=new HashMap<>();
 
-                            final String UserEmail = Constants.UserEmail;
-                            final String reviewDate=Constants.reviewDate;
+                        map.put("feedback",Constants.feedback);
+                        map.put("reviewDate",Constants.reviewDate);
 
-                            final String type = Constants.type;
+                        map.put("priceRating",Constants.priceRating);
+                        map.put("speedRating",Constants.speedRating);
+                        map.put("serviceRating",Constants.serviceRating);
+                        map.put("overallRating",Constants.overallRating);
 
-                            final String priceRating = Constants.priceRating;
-                            final String speedRating = Constants.speedRating;
-                            final String serviceRating = Constants.serviceRating;
-                            final String overallRating = Constants.overallRating;
+                        FirebaseDatabase.getInstance().getReference().child("Reviews")
+                                .child(Constants.reviewKey).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+                                if(task.isSuccessful())
+                                {
+                                    //Disable ProgressDialog
+                                    progressDialog2.dismiss();
 
-                            final String feedback = Constants.feedback;
-
-                            //Adding Review
-
-                            final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Longitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
-
-                            FirebaseDatabase.getInstance().getReference("Reviews").
-                                    push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful())
-                                    {
-                                        //Disable ProgressDialog
-                                        progressDialog.dismiss();
-
-                                        Toast.makeText(IspRatingsActivity.this, "Successfully Added Review", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
-                                        finish();
-                                    }
-                                    else
-                                    {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(IspRatingsActivity.this, "Adding Review Failed!", Toast.LENGTH_SHORT).show();
-                                    }
+                                    Toast.makeText(IspRatingsActivity.this, "Successfully Update Review", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+                                    finish();
                                 }
-                            });
+                                else
+                                {
+                                    //Disable ProgressDialog
+                                    progressDialog2.dismiss();
+
+                                    Toast.makeText(IspRatingsActivity.this, "Failed to Update Review", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+                                    finish();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else
+        {
+            setContentView(R.layout.activity_isp_ratings);
+
+            btnSubmitReview=findViewById(R.id.btnSubmitReview);
+
+            txtFeedback=findViewById(R.id.txtFeedback);
+
+            auth= FirebaseAuth.getInstance();
+
+            awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
+
+            awesomeValidation.addValidation(this,R.id.txtFeedback, RegexTemplate.NOT_EMPTY,R.string.feedback_error);
+
+            RdoGrpType=findViewById(R.id.RdoGrpType);
+
+            RbPrice=findViewById(R.id.RbPrice);
+            RbService=findViewById(R.id.RbService);
+            RbSpeed=findViewById(R.id.RbSpeed);
+            RbOverall=findViewById(R.id.RbOverall);
+
+            RbPrice.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    priceRatingFlag=true;
+                    Constants.priceRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars for Price.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RbService.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    serviceRatingFlag=true;
+                    Constants.serviceRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars for Service.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RbSpeed.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    speedRatingFlag=true;
+                    Constants.speedRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars for Speed.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RbOverall.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean b)
+                {
+                    overallRatingFlag=true;
+                    Constants.overallRating=String.valueOf(rating);
+                    Toast.makeText(IspRatingsActivity.this, rating+" Stars Overall.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            btnSubmitReview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    //Setting Feedback
+                    Constants.feedback=txtFeedback.getText().toString().trim();
+
+                    //Setting Date
+                    Date date=new Date();
+                    SimpleDateFormat curDate=new SimpleDateFormat("dd/MM/yyyy");
+                    String getDate=curDate.format(date);
+                    Constants.reviewDate=getDate;
+
+                    boolean validateFeedback=awesomeValidation.validate();
+
+                    if(validateFeedback)
+                    {
+                        if(typeFlag)
+                        {
+                            if(priceRatingFlag && speedRatingFlag && serviceRatingFlag && overallRatingFlag)
+                            {
+                                //Enabled ProgressDialog
+                                progressDialog = new ProgressDialog(IspRatingsActivity.this);
+                                progressDialog.setMessage("Submitting your Feedback...");
+                                progressDialog.show();
+
+                                //Enter Review here
+                                final String ISP_Name = Constants.ISP_Name;
+                                final String MAP_Latitude = Constants.MAP_Latitude;
+                                final String MAP_Longitude = Constants.MAP_Longitude;
+
+                                final String UserEmail = Constants.UserEmail;
+                                final String reviewDate=Constants.reviewDate;
+
+                                final String type = Constants.type;
+
+                                final String priceRating = Constants.priceRating;
+                                final String speedRating = Constants.speedRating;
+                                final String serviceRating = Constants.serviceRating;
+                                final String overallRating = Constants.overallRating;
+
+                                final String feedback = Constants.feedback;
+
+                                //Adding Review
+
+                                final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Longitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
+
+                                FirebaseDatabase.getInstance().getReference("Reviews").
+                                        push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            //Disable ProgressDialog
+                                            progressDialog.dismiss();
+
+                                            Toast.makeText(IspRatingsActivity.this, "Successfully Added Review", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+                                            finish();
+                                        }
+                                        else
+                                        {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(IspRatingsActivity.this, "Adding Review Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                Toast.makeText(IspRatingsActivity.this, "Please Provide all Ratings!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         else {
-                            Toast.makeText(IspRatingsActivity.this, "Please Provide all Ratings!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(IspRatingsActivity.this, "Please Select Type of Connection!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
-                        Toast.makeText(IspRatingsActivity.this, "Please Select Type of Connection!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(IspRatingsActivity.this, "Please Provide Feedback!", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else {
-                    Toast.makeText(IspRatingsActivity.this, "Please Provide Feedback!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            });
+        }
+
     }
 
     public void checkType(View v)

@@ -12,8 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.raternet_isp_app.Constants;
+import com.example.raternet_isp_app.IspRatingsActivity;
 import com.example.raternet_isp_app.R;
-import com.example.raternet_isp_app.UpdateIspRatingsActivity;
 import com.example.raternet_isp_app.models.ReviewDetails;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -36,7 +37,7 @@ public class ReviewViewAdapter extends FirebaseRecyclerAdapter<ReviewDetails,Rev
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ReviewDetails model)
+    protected void onBindViewHolder(@NonNull ViewHolder holder, final int position, @NonNull ReviewDetails model)
     {
         holder.ispName.setText(model.getISP_Name());
         holder.typeName.setText(model.getType());
@@ -48,11 +49,17 @@ public class ReviewViewAdapter extends FirebaseRecyclerAdapter<ReviewDetails,Rev
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(context, "Clicked! "+curReview.getFeedback()+" "+curReview.getUserEmail(), Toast.LENGTH_SHORT).show();
-
-                Intent intent=new Intent(context, UpdateIspRatingsActivity.class);
+                Intent intent=new Intent(context, IspRatingsActivity.class);
 
                 intent.putExtra("CurrentReview",curReview);
+
+                //Setting Position
+                Constants.reviewPosition=position;
+
+                //Setting Key
+                Constants.reviewKey=getRef(position).getKey();
+
+                Toast.makeText(context, "Clicked! "+curReview.getFeedback()+" "+curReview.getUserEmail(), Toast.LENGTH_SHORT).show();
 
                 view.getContext().startActivity(intent);
             }

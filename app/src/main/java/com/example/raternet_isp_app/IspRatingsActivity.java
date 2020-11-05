@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -25,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletionService;
 
 
@@ -32,49 +35,67 @@ public class IspRatingsActivity extends AppCompatActivity {
 
     public FirebaseAuth auth;
 
+    //Insert Review
     public RadioGroup RdoGrpType;
     public RadioButton RdoBtnType;
-
     public Button btnSubmitReview;
-
     public EditText txtFeedback;
-
+    public TextView headerText;
     public RatingBar RbPrice;
     public RatingBar RbService;
     public RatingBar RbSpeed;
     public RatingBar RbOverall;
+    private ProgressDialog progressDialog;
 
+    //Update Review
+    public ReviewDetails curReview;
+
+    //General Required Variables
     public boolean typeFlag=false;
     public boolean priceRatingFlag=false;
     public boolean serviceRatingFlag=false;
     public boolean speedRatingFlag=false;
     public boolean overallRatingFlag=false;
 
-    private ProgressDialog progressDialog;
-
     private AwesomeValidation awesomeValidation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_isp_ratings);
-
+        Intent intent=getIntent();
         btnSubmitReview=findViewById(R.id.btnSubmitReview);
-
         txtFeedback=findViewById(R.id.txtFeedback);
-
         auth= FirebaseAuth.getInstance();
-
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
-
         awesomeValidation.addValidation(this,R.id.txtFeedback, RegexTemplate.NOT_EMPTY,R.string.feedback_error);
-
         RdoGrpType=findViewById(R.id.RdoGrpType);
-
         RbPrice=findViewById(R.id.RbPrice);
         RbService=findViewById(R.id.RbService);
         RbSpeed=findViewById(R.id.RbSpeed);
         RbOverall=findViewById(R.id.RbOverall);
+        headerText = findViewById(R.id.txtViewHeader);
+        headerText.setText("Give Ratings");
+
+        if(intent.hasExtra("CurrentReview"))
+        {
+            this.curReview=(ReviewDetails)intent.getSerializableExtra("CurrentReview");
+            headerText.setText("Update Ratings");
+
+            RbPrice.setRating(Float.valueOf(curReview.getPriceRating()));
+            RbSpeed.setRating(Float.valueOf(curReview.getSpeedRating()));
+            RbService.setRating(Float.valueOf(curReview.getServiceRating()));
+            RbOverall.setRating(Float.valueOf(curReview.getOverallRating()));
+
+            priceRatingFlag=true;
+            serviceRatingFlag=true;
+            speedRatingFlag=true;
+            overallRatingFlag=true;
+
+            txtFeedback.setText(curReview.getFeedback());
+        }
+
 
         RbPrice.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -85,7 +106,6 @@ public class IspRatingsActivity extends AppCompatActivity {
                 Toast.makeText(IspRatingsActivity.this, rating+" Stars for Price.", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         RbService.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -147,43 +167,73 @@ public class IspRatingsActivity extends AppCompatActivity {
                             final String ISP_Name = Constants.ISP_Name;
                             final String MAP_Latitude = Constants.MAP_Latitude;
                             final String MAP_Longitude = Constants.MAP_Longitude;
-
                             final String UserEmail = Constants.UserEmail;
                             final String reviewDate=Constants.reviewDate;
-
                             final String type = Constants.type;
-
                             final String priceRating = Constants.priceRating;
                             final String speedRating = Constants.speedRating;
                             final String serviceRating = Constants.serviceRating;
                             final String overallRating = Constants.overallRating;
-
                             final String feedback = Constants.feedback;
 
-                            //Adding Review
+                            if(curReview==null){
+                                //Adding Review
+                                final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Longitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
 
-                            final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Longitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
-
-                            FirebaseDatabase.getInstance().getReference("Reviews").
-                                    push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful())
-                                    {
-                                        //Disable ProgressDialog
-                                        progressDialog.dismiss();
-
-                                        Toast.makeText(IspRatingsActivity.this, "Successfully Added Review", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
-                                        finish();
+                                FirebaseDatabase.getInstance().getReference("Reviews").
+                                        push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            //Disable ProgressDialog
+                                            progressDialog.dismiss();
+                                            Toast.makeText(IspRatingsActivity.this, "Successfully Added Review",
+                                                    Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+                                            finish();
+                                        }
+                                        else
+                                        {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(IspRatingsActivity.this, "Adding Review Failed!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                    else
+                                });
+                            } else {
+                                Map<String,Object>map=new HashMap<>();
+
+                                map.put("feedback",Constants.feedback);
+                                map.put("reviewDate",Constants.reviewDate);
+                                map.put("priceRating",Constants.priceRating);
+                                map.put("speedRating",Constants.speedRating);
+                                map.put("serviceRating",Constants.serviceRating);
+                                map.put("overallRating",Constants.overallRating);
+
+                                FirebaseDatabase.getInstance().getReference().child("Reviews")
+                                        .child(Constants.reviewKey).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task)
                                     {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(IspRatingsActivity.this, "Adding Review Failed!", Toast.LENGTH_SHORT).show();
+                                        if(task.isSuccessful())
+                                        {
+                                            //Disable ProgressDialog
+                                            progressDialog.dismiss();
+                                            Toast.makeText(IspRatingsActivity.this, "Successfully Updated Review", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+                                            finish();
+                                        }
+                                        else
+                                        {
+                                            //Disable ProgressDialog
+                                            progressDialog.dismiss();
+                                            Toast.makeText(IspRatingsActivity.this, "Failed to Update Review", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(IspRatingsActivity.this,MainActivity2.class));
+                                            finish();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                         else {
                             Toast.makeText(IspRatingsActivity.this, "Please Provide all Ratings!", Toast.LENGTH_SHORT).show();
@@ -203,13 +253,9 @@ public class IspRatingsActivity extends AppCompatActivity {
     public void checkType(View v)
     {
         int radioId=RdoGrpType.getCheckedRadioButtonId();
-
         RdoBtnType=findViewById(radioId);
-
         Constants.type=RdoBtnType.getText().toString().trim();
-
         typeFlag=true;
-
         Toast.makeText(this, "Selected "+RdoBtnType.getText(), Toast.LENGTH_SHORT).show();
     }
 

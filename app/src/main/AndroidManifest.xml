@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".UpdateIspRatingsActivity"></activity>
+        <activity android:name=".SearchNetworkActivity"></activity>
         <activity android:name=".ViewReviewActivity" />
         <activity android:name=".IspRatingsActivity" />
         <activity android:name=".MainActivity2" />

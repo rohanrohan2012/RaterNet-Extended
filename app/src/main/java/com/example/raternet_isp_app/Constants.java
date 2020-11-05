@@ -17,4 +17,7 @@ public class Constants
     public static String overallRating=null;
 
     public static String feedback=null;
+
+    public static int reviewPosition=-1;
+    public static String reviewKey=null;
 }

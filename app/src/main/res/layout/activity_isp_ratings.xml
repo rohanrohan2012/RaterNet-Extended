@@ -29,8 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="0sp"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="5sp"
         android:layout_marginTop="5sp"
+        android:layout_marginBottom="10sp"
         android:layout_weight="10"
         android:gravity="start"
         android:orientation="horizontal">
@@ -42,7 +42,7 @@
             android:buttonTint="@color/colorPrimary"
             android:fontFamily="monospace"
             android:onClick="checkType"
-            android:text="WiFi"
+            android:text="@string/wifi"
             android:textSize="18sp"/>
 
         <RadioButton
@@ -52,7 +52,7 @@
             android:buttonTint="@color/colorPrimary"
             android:fontFamily="monospace"
             android:onClick="checkType"
-            android:text="BroadBand"
+            android:text="@string/broadband"
             android:textSize="18sp"/>
         <RadioButton
             android:id="@+id/RdnBtnMobData"
@@ -61,19 +61,9 @@
             android:buttonTint="@color/colorPrimary"
             android:fontFamily="monospace"
             android:onClick="checkType"
-            android:text="Mob-Data"
+            android:text="@string/data"
             android:textSize="18sp"/>
     </RadioGroup>
-
-
-    <EditText
-        android:id="@+id/txtFeedback"
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_gravity="center"
-        android:layout_weight="15"
-        android:gravity="bottom"
-        android:hint="Feedback"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,6 +130,7 @@
             android:theme="@style/RatingBar"/>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
@@ -170,8 +161,8 @@
             android:numStars="5"
             android:stepSize="0.5"
             android:theme="@style/RatingBar"/>
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
@@ -202,9 +193,16 @@
             android:numStars="5"
             android:stepSize="0.5"
             android:theme="@style/RatingBar"/>
-
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/txtFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_gravity="center"
+        android:layout_weight="15"
+        android:gravity="bottom"
+        android:hint="Feedback"/>
 
     <Button
         android:id="@+id/btnSubmitReview"

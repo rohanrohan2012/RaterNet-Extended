@@ -83,19 +83,21 @@ public class IspRatingsActivity extends AppCompatActivity {
             this.curReview=(ReviewDetails)intent.getSerializableExtra("CurrentReview");
             headerText.setText("Update Ratings");
 
-            RbPrice.setRating(Float.valueOf(curReview.getPriceRating()));
-            RbSpeed.setRating(Float.valueOf(curReview.getSpeedRating()));
-            RbService.setRating(Float.valueOf(curReview.getServiceRating()));
-            RbOverall.setRating(Float.valueOf(curReview.getOverallRating()));
+            RdoGrpType=findViewById(R.id.RdoGrpType);
+            RdoGrpType.setVisibility(View.INVISIBLE);
 
             priceRatingFlag=true;
             serviceRatingFlag=true;
             speedRatingFlag=true;
             overallRatingFlag=true;
 
+            RbPrice.setRating(Float.parseFloat(curReview.getPriceRating()));
+            RbSpeed.setRating(Float.parseFloat(curReview.getSpeedRating()));
+            RbService.setRating(Float.parseFloat(curReview.getServiceRating()));
+            RbOverall.setRating(Float.parseFloat(curReview.getOverallRating()));
+
             txtFeedback.setText(curReview.getFeedback());
         }
-
 
         RbPrice.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -154,7 +156,7 @@ public class IspRatingsActivity extends AppCompatActivity {
 
                 if(validateFeedback)
                 {
-                    if(typeFlag)
+                    if(typeFlag || curReview!=null)
                     {
                         if(priceRatingFlag && speedRatingFlag && serviceRatingFlag && overallRatingFlag)
                         {
@@ -201,6 +203,8 @@ public class IspRatingsActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
+
+                                //Updating Review
                                 Map<String,Object>map=new HashMap<>();
 
                                 map.put("feedback",Constants.feedback);

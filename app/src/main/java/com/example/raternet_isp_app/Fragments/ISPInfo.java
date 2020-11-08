@@ -68,6 +68,8 @@ public class ISPInfo extends Fragment {
                                 //Setting ISP in Constants
                                 Constants.ISP_Name=jsonObject.get("isp").getAsString();
                                 ISPView.setText(jsonObject.get("isp").getAsString());
+                                Constants.ISP_Latitude = jsonObject.get("lat").getAsDouble();
+                                Constants.ISP_Longitude = jsonObject.get("lon").getAsDouble();
                             }
                             catch (Exception e){
                                 e.printStackTrace();

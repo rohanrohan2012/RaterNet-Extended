@@ -54,7 +54,6 @@ public class ViewReviewActivity extends AppCompatActivity {
     @Override
     public void onBackPressed ()
     {
-        startActivity(new Intent(ViewReviewActivity.this,MainActivity2.class));
         this.finish();
     }
 }

@@ -25,6 +25,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,12 +46,14 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-public class LocationService extends Fragment{
+public class LocationService extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
-    private String displayAdress;
+    private static MarkerOptions markerOptions;
+    private Marker markerYourLocation,markerISPLocation;
     private boolean settingsEnabled = false;
-    private TextView LocView;
+    private static GoogleMap googleMap;
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -52,6 +64,7 @@ public class LocationService extends Fragment{
     };
     private final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12; // passed back to you on completion to differentiate on request from other
     private static final int REQUEST_CHECK_SETTINGS= 14;
+    private static boolean zoomFlag = true;
     private static final String[] LOCATION_PERMS={
             Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -61,32 +74,55 @@ public class LocationService extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.location_view, container, false);
-        LocView = view.findViewById(R.id.location);
         this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-        checkLocationSettings();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED && settingsEnabled) {
-            // if user has already given permission
-            startLocationUpdates();
-        } else {
-            requestPermissions(LOCATION_PERMS, MY_PERMISSION_ACCESS_FINE_LOCATION); // request to allow location
-            // request results are returned in onRequestPermissionsResult function
-        }
+        //LocView = view.findViewById(R.id.location);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         return view;
     }
 
     void updatePosition(Location location) {
         Double latitude = location.getLatitude();
         Double longitude = location.getLongitude();
-        Geocoder geocoder = new Geocoder(getContext());
+        //Geocoder geocoder = new Geocoder(getContext());
         try {
-            Address address = geocoder.getFromLocation(latitude,longitude,1).get(0);
-            displayAdress = address.getLocality() + "," +
-                    address.getSubLocality() + "," + address.getPostalCode() + "," + address.getCountryName();
-            //displayAdress = latitude.toString() +" " + longitude.toString();
-            LocView.setText(displayAdress);
-            //Toast.makeText(getContext(),displayAdress,Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
+            if(markerYourLocation!=null){
+                markerYourLocation.remove();
+            }
+
+            if(markerISPLocation!=null){
+                markerISPLocation.remove();
+            }
+
+           LatLng coordinates = new LatLng(latitude,longitude);
+
+            if(Constants.ISP_Longitude!=null){
+                LatLng ispCoordinates = new LatLng(Constants.ISP_Latitude,Constants.ISP_Longitude);
+                markerOptions = new MarkerOptions().position(ispCoordinates).title("Current ISP Position")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                markerISPLocation = googleMap.addMarker(markerOptions);
+            }
+
+            markerOptions = new MarkerOptions().position(coordinates).title("Current Position")
+            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            markerYourLocation = googleMap.addMarker(markerOptions);
+
+            if(zoomFlag){
+                CameraPosition camPos = new CameraPosition.Builder()
+                        .target(coordinates)
+                        .zoom(18)
+                        .bearing(location.getBearing())
+                        .tilt(70)
+                        .build();
+                CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
+                googleMap.animateCamera(camUpd3);
+                zoomFlag = false;
+            }
+
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //Setting MAP_Latitude and Longitude
@@ -104,6 +140,7 @@ public class LocationService extends Fragment{
     public void onResume() {
         super.onResume();
         startLocationUpdates();
+        zoomFlag = true;
     }
 
     @Override
@@ -124,8 +161,6 @@ public class LocationService extends Fragment{
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     startLocationUpdates();
-                }  else {
-                    LocView.setText("Feature Unavailiable..."); // service disabled
                 }
                 return;
         }
@@ -177,4 +212,18 @@ public class LocationService extends Fragment{
         fusedLocationClient.removeLocationUpdates(this.locationCallback);
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        checkLocationSettings();
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED && settingsEnabled) {
+            // if user has already given permission
+            startLocationUpdates();
+        } else {
+            requestPermissions(LOCATION_PERMS, MY_PERMISSION_ACCESS_FINE_LOCATION); // request to allow location
+            // request results are returned in onRequestPermissionsResult function
+        }
+
+    }
 }

@@ -8,59 +8,50 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity2">
 
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/app_bar" />
-
-    <fragment
-        android:name="com.example.raternet_isp_app.Fragments.ISPInfo"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/ispFragment"
-        android:layout_height="wrap_content"/>
-
     <fragment
         android:name="com.example.raternet_isp_app.Fragments.LocationService"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
         android:id="@+id/locationFragment"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/btnWriteReview"
+    <include layout="@layout/app_bar" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="10sp"
-        android:layout_marginLeft="50sp"
-        android:layout_marginRight="50sp"
-        android:layout_marginTop="20sp"
-        android:background="@drawable/btn_rounded"
-        android:text="Brag/Rant about your network!"
-        android:textColor="@color/white"
-        android:textStyle="bold"/>
+        android:layout_margin="10dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/btnSearchNetwork"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="10sp"
-        android:layout_marginLeft="50sp"
-        android:layout_marginRight="50sp"
-        android:layout_marginTop="10sp"
-        android:background="@drawable/btn_rounded"
-        android:text="Find me a better network!"
-        android:textColor="@color/white"
-        android:textStyle="bold"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnWriteReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="15dp"
+            android:padding="10sp"
+            android:background="@drawable/btn_rounded"
+            android:text="Give Feedback"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+        <fragment
+            android:name="com.example.raternet_isp_app.Fragments.ISPInfo"
+            android:layout_width="match_parent"
+            android:id="@+id/ispFragment"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"

@@ -2,18 +2,35 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_rounded3"
+    android:orientation="horizontal"
+    android:weightSum="100">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/ISP"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:padding="10sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:gravity="center"
+        android:layout_weight="70"
+        android:padding="15dp"
         android:text="My ISP"
+        android:textSize="20sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btnSearchNetwork"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="30"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10sp"
         android:background="@drawable/btn_rounded2"
-        android:textSize="15sp"/>
+        android:text="Find me better!"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

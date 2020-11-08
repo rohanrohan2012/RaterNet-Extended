@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20sp"
+    android:padding="10sp"
     android:gravity="center"
     android:orientation="vertical"
     android:weightSum="140"
@@ -24,21 +24,22 @@
         android:fontFamily="monospace"
         android:layout_margin="5sp"/>
 
+
     <RadioGroup
         android:id="@+id/RdoGrpType"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginTop="5sp"
         android:layout_marginBottom="10sp"
         android:layout_weight="10"
-        android:gravity="start"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/RdnBtnWiFi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:buttonTint="@color/colorPrimary"
             android:fontFamily="monospace"
             android:onClick="checkType"
@@ -49,6 +50,7 @@
             android:id="@+id/RdnBtnBroadBand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:buttonTint="@color/colorPrimary"
             android:fontFamily="monospace"
             android:onClick="checkType"
@@ -58,6 +60,7 @@
             android:id="@+id/RdnBtnMobData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:buttonTint="@color/colorPrimary"
             android:fontFamily="monospace"
             android:onClick="checkType"

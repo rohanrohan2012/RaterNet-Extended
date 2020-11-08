@@ -35,6 +35,12 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="price">Price</string>
+    <string name="service">Service</string>
+    <string name="speed">Speed</string>
+    <string name="overall">Overall</string>
+    <string name="feedback">Feedback</string>
+
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 

@@ -37,14 +37,22 @@
             android:padding="10sp"
             android:background="@drawable/btn_rounded"
             android:text="Give Feedback"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:textSize="10dp"
+            android:text="Swipe up for more details"/>
 
         <fragment
             android:name="com.example.raternet_isp_app.Fragments.ISPInfo"
             android:layout_width="match_parent"
             android:id="@+id/ispFragment"
             android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 

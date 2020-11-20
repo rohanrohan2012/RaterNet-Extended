@@ -1,6 +1,13 @@
 package com.example.raternet_isp_app.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +20,15 @@ import com.example.raternet_isp_app.Constants;
 import com.example.raternet_isp_app.MainActivity2;
 import com.example.raternet_isp_app.R;
 import com.example.raternet_isp_app.endpoints.GetDataService;
+import com.example.raternet_isp_app.motionlisteners.OnSwipeTouchListener;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
 import com.example.raternet_isp_app.network.RetrofitClientInstance2;
 import com.google.gson.JsonObject;
+import com.ramijemli.percentagechartview.PercentageChartView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +39,9 @@ public class ISPInfo extends Fragment {
     private TextView ISPView;
     private ProgressDialog progressDialog;
     private String ip = null;
+    private ViewGroup ispDetails;
+    private TextView ispSpeedUp,organization;
+    private ConnectivityManager cm;
 
     @Nullable
     @Override
@@ -39,9 +52,31 @@ public class ISPInfo extends Fragment {
     }
 
     @Override
+    @SuppressLint("NewApi")
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ispDetails = getView().findViewById(R.id.details);
+        ispSpeedUp = ispDetails.findViewById(R.id.isp_speed_up);
+        organization = ispDetails.findViewById(R.id.org);
+
+        cm = (ConnectivityManager)  getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        //should check null because in airplane mode it will be null
+        NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if(nc!=null){
+            Integer upSpeed = nc.getLinkUpstreamBandwidthKbps();
+            Double speed = (double) upSpeed * 0.0010;
+            ispSpeedUp.setText(speed.toString() + " Mbps");
+        }
+
         fetchIPInfo();
+        getView().setOnTouchListener(new OnSwipeTouchListener(getContext()){
+            public void onSwipeTop() {
+                ispDetails.setVisibility(View.VISIBLE);
+            }
+            public void onSwipeBottom() {
+                ispDetails.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void fetchIPInfo(){
@@ -68,8 +103,8 @@ public class ISPInfo extends Fragment {
                                 //Setting ISP in Constants
                                 Constants.ISP_Name=jsonObject.get("isp").getAsString();
                                 ISPView.setText(jsonObject.get("isp").getAsString());
-                                Constants.ISP_Latitude = jsonObject.get("lat").getAsDouble();
-                                Constants.ISP_Longitude = jsonObject.get("lon").getAsDouble();
+                                organization.setText(jsonObject.get("as").getAsString());
+
                             }
                             catch (Exception e){
                                 e.printStackTrace();

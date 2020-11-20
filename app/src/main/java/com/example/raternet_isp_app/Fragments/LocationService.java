@@ -50,10 +50,16 @@ import androidx.fragment.app.FragmentManager;
 
 public class LocationService extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
+
+    // to style map location marker
     private static MarkerOptions markerOptions;
-    private Marker markerYourLocation,markerISPLocation;
+    private Marker markerYourLocation;
+
+    // location settings enabled
     private boolean settingsEnabled = false;
     private static GoogleMap googleMap;
+
+    // callback to update location after specified interval
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -62,9 +68,13 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
             updatePosition(lastLocation);
         }
     };
+
+    // permission to access location
     private final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12; // passed back to you on completion to differentiate on request from other
-    private static final int REQUEST_CHECK_SETTINGS= 14;
-    private static boolean zoomFlag = true;
+
+    // a boolean variable to prevent generation of multiple markers (marker for each updated location)
+    private static boolean markerSetFlag = true;
+
     private static final String[] LOCATION_PERMS={
             Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -88,28 +98,19 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         Double longitude = location.getLongitude();
         //Geocoder geocoder = new Geocoder(getContext());
         try {
+            //remove marker of old location
             if(markerYourLocation!=null){
                 markerYourLocation.remove();
             }
 
-            if(markerISPLocation!=null){
-                markerISPLocation.remove();
-            }
-
            LatLng coordinates = new LatLng(latitude,longitude);
-
-            if(Constants.ISP_Longitude!=null){
-                LatLng ispCoordinates = new LatLng(Constants.ISP_Latitude,Constants.ISP_Longitude);
-                markerOptions = new MarkerOptions().position(ispCoordinates).title("Current ISP Position")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-                markerISPLocation = googleMap.addMarker(markerOptions);
-            }
 
             markerOptions = new MarkerOptions().position(coordinates).title("Current Position")
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             markerYourLocation = googleMap.addMarker(markerOptions);
 
-            if(zoomFlag){
+            // set new marker on updated location and set markerSetFlag to false
+            if(markerSetFlag){
                 CameraPosition camPos = new CameraPosition.Builder()
                         .target(coordinates)
                         .zoom(18)
@@ -118,7 +119,7 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
                         .build();
                 CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
                 googleMap.animateCamera(camUpd3);
-                zoomFlag = false;
+                markerSetFlag = false;
             }
 
 
@@ -140,7 +141,7 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         startLocationUpdates();
-        zoomFlag = true;
+        markerSetFlag = true;
     }
 
     @Override
@@ -177,6 +178,7 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         return locationRequest;
     }
 
+    //check if location settings are enabled on device
     private void checkLocationSettings() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         SettingsClient client = LocationServices.getSettingsClient(getContext());

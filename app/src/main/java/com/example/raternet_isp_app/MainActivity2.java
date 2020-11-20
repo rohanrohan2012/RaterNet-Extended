@@ -118,7 +118,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         {
             case R.id.drawer_update:
                 startActivity(new Intent(MainActivity2.this, ViewReviewActivity.class));
-                this.finish();
                 break;
             case R.id.drawer_logout:
                 firebaseAuth.signOut();

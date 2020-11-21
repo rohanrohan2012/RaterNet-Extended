@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +27,6 @@ import com.example.raternet_isp_app.motionlisteners.OnSwipeTouchListener;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
 import com.example.raternet_isp_app.network.RetrofitClientInstance2;
 import com.google.gson.JsonObject;
-import com.ramijemli.percentagechartview.PercentageChartView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,8 +42,9 @@ public class ISPInfo extends Fragment {
     private ProgressDialog progressDialog;
     private String ip = null;
     private ViewGroup ispDetails;
-    private TextView ispSpeedUp,organization;
+    private TextView ispSpeedUp,organization,addressView;
     private ConnectivityManager cm;
+    private Geocoder geocoder;
 
     @Nullable
     @Override
@@ -58,6 +61,7 @@ public class ISPInfo extends Fragment {
         ispDetails = getView().findViewById(R.id.details);
         ispSpeedUp = ispDetails.findViewById(R.id.isp_speed_up);
         organization = ispDetails.findViewById(R.id.org);
+        addressView = getView().findViewById(R.id.address);
 
         cm = (ConnectivityManager)  getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         //should check null because in airplane mode it will be null
@@ -104,6 +108,16 @@ public class ISPInfo extends Fragment {
                                 Constants.ISP_Name=jsonObject.get("isp").getAsString();
                                 ISPView.setText(jsonObject.get("isp").getAsString());
                                 organization.setText(jsonObject.get("as").getAsString());
+
+                                if(Constants.MAP_Longitude!=null && Constants.MAP_Latitude!=null){
+                                    geocoder = new Geocoder(getContext());
+                                    Address address = geocoder.getFromLocation(
+                                            Double.parseDouble(Constants.MAP_Latitude),
+                                            Double.parseDouble(Constants.MAP_Longitude),
+                                            1).get(0);
+                                    String displayAddress = address.getSubLocality()+ " " + address.getLocality() + " " + address.getPostalCode();
+                                    addressView.setText(displayAddress);
+                                }
 
                             }
                             catch (Exception e){

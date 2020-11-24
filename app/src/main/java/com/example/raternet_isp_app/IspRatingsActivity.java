@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.models.ReviewDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletionService;
 
 
 public class IspRatingsActivity extends AppCompatActivity {
@@ -169,6 +169,8 @@ public class IspRatingsActivity extends AppCompatActivity {
                             final String ISP_Name = Constants.ISP_Name;
                             final String MAP_Latitude = Constants.MAP_Latitude;
                             final String MAP_Longitude = Constants.MAP_Longitude;
+                            final String city = Constants.city;
+                            final String locality = Constants.locality;
                             final String UserEmail = Constants.UserEmail;
                             final String reviewDate=Constants.reviewDate;
                             final String type = Constants.type;
@@ -180,7 +182,12 @@ public class IspRatingsActivity extends AppCompatActivity {
 
                             if(curReview==null){
                                 //Adding Review
-                                final ReviewDetails review=new ReviewDetails(ISP_Name,MAP_Latitude,MAP_Longitude,UserEmail,type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
+                                final ReviewDetails review=new ReviewDetails(ISP_Name,
+                                        MAP_Latitude,
+                                        MAP_Longitude,
+                                        city,locality,
+                                        UserEmail,
+                                        type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
 
                                 FirebaseDatabase.getInstance().getReference("Reviews").
                                         push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {

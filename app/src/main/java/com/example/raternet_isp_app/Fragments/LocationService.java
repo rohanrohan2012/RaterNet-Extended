@@ -12,9 +12,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.raternet_isp_app.Constants;
+import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.R;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,7 +42,6 @@ import java.io.IOException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -58,6 +56,7 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
     // location settings enabled
     private boolean settingsEnabled = false;
     private static GoogleMap googleMap;
+    private Geocoder geocoder;
 
     // callback to update location after specified interval
     private LocationCallback locationCallback = new LocationCallback() {
@@ -65,7 +64,11 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
             Location lastLocation = locationResult.getLastLocation();
-            updatePosition(lastLocation);
+            try {
+                updatePosition(lastLocation);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -93,7 +96,7 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    void updatePosition(Location location) {
+    void updatePosition(Location location) throws IOException {
         Double latitude = location.getLatitude();
         Double longitude = location.getLongitude();
         //Geocoder geocoder = new Geocoder(getContext());
@@ -126,9 +129,18 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        geocoder = new Geocoder(getContext());
+        Address address = geocoder.getFromLocation(
+                latitude,
+                longitude,
+                1).get(0);
         //Setting MAP_Latitude and Longitude
         Constants.MAP_Latitude = latitude.toString();
         Constants.MAP_Longitude = longitude.toString();
+        Constants.city = address.getLocality();
+        Constants.locality = address.getSubLocality();
+
     }
 
     @Override

@@ -4,13 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context=".SearchNetworkActivity">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="Hi!"
-        android:gravity="center"/>
+<ListView
+    android:id="@+id/betternetworks"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="50"
+    android:layout_margin="10dp"/>
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/reviews"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="50"
+    android:layout_margin="10dp"/>
 
 </LinearLayout>

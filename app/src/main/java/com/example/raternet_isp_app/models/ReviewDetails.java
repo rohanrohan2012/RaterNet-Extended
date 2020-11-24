@@ -7,7 +7,8 @@ public class ReviewDetails implements Serializable
     private String ISP_Name = null;
     private String MAP_Latitude = null;
     private String MAP_Longitude = null;
-
+    private String city = null;
+    private String locality = null;
 
     private String UserEmail = null;
     private String reviewDate=null;
@@ -23,10 +24,26 @@ public class ReviewDetails implements Serializable
 
     public ReviewDetails() {}
 
-    public ReviewDetails(String ISP_Name, String MAP_Latitude, String MAP_Longitude, String UserEmail, String type, String speedRating, String priceRating, String serviceRating, String overallRating, String feedback,String reviewDate) {
+
+
+    public ReviewDetails(String ISP_Name,
+                         String MAP_Latitude,
+                         String MAP_Longitude,
+                         String city,
+                         String locality,
+                         String UserEmail,
+                         String type,
+                         String speedRating,
+                         String priceRating,
+                         String serviceRating,
+                         String overallRating,
+                         String feedback,
+                         String reviewDate) {
         this.ISP_Name = ISP_Name;
         this.MAP_Latitude = MAP_Latitude;
         this.MAP_Longitude = MAP_Longitude;
+        this.city = city;
+        this.locality = locality;
         this.UserEmail = UserEmail;
         this.type = type;
         this.priceRating = priceRating;
@@ -35,6 +52,13 @@ public class ReviewDetails implements Serializable
         this.overallRating=overallRating;
         this.feedback = feedback;
         this.reviewDate=reviewDate;
+    }
+
+    public ReviewDetails(String ISP_Name, String userEmail, String overallRating, String feedback) {
+        this.ISP_Name = ISP_Name;
+        UserEmail = userEmail;
+        this.overallRating = overallRating;
+        this.feedback = feedback;
     }
 
     public String getReviewDate() {
@@ -55,6 +79,22 @@ public class ReviewDetails implements Serializable
 
     public String getMAP_Longitude() {
         return MAP_Longitude;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
     }
 
     public String getOverallRating() {

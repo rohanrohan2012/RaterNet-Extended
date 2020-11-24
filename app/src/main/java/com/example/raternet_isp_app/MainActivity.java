@@ -41,12 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.btnLogin:
-                Toast.makeText(this, "Entering Login", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 this.finish();
                 break;
             case R.id.btnRegister:
-                Toast.makeText(this, "Entering Register", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this,RegisterActivity.class));
                 this.finish();
                 break;

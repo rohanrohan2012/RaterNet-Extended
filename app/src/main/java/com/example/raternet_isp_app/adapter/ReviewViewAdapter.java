@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.raternet_isp_app.Constants;
+import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.IspRatingsActivity;
 import com.example.raternet_isp_app.R;
 import com.example.raternet_isp_app.models.ReviewDetails;
@@ -93,3 +93,5 @@ public class ReviewViewAdapter extends FirebaseRecyclerAdapter<ReviewDetails,Rev
         }
     }
 }
+
+

@@ -3,15 +3,12 @@ package com.example.raternet_isp_app.Fragments;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +16,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.raternet_isp_app.Constants;
-import com.example.raternet_isp_app.MainActivity2;
+import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.R;
+import com.example.raternet_isp_app.SearchNetworkActivity;
 import com.example.raternet_isp_app.endpoints.GetDataService;
 import com.example.raternet_isp_app.motionlisteners.OnSwipeTouchListener;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
@@ -30,13 +27,12 @@ import com.google.gson.JsonObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ISPInfo extends Fragment {
+public class ISPInfo extends Fragment implements View.OnClickListener{
 
     private TextView ISPView;
     private ProgressDialog progressDialog;
@@ -81,6 +77,14 @@ public class ISPInfo extends Fragment {
                 ispDetails.setVisibility(View.GONE);
             }
         });
+        getView().findViewById(R.id.btnSearchNetwork).setOnClickListener(this);
+        getView().findViewById(R.id.Refresh).setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //fetchIPInfo();
     }
 
     public void fetchIPInfo(){
@@ -149,6 +153,17 @@ public class ISPInfo extends Fragment {
                 Log.i("IP Error",t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSearchNetwork:
+                startActivity(new Intent(getContext(), SearchNetworkActivity.class));
+                break;
+
+            default: break;
+        }
     }
 }
 //Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $

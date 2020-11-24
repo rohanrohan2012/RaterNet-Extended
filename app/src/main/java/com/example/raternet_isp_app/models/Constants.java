@@ -1,4 +1,4 @@
-package com.example.raternet_isp_app;
+package com.example.raternet_isp_app.models;
 
 public class Constants
 {
@@ -7,6 +7,8 @@ public class Constants
     public static String MAP_Longitude=null;
     public static Double ISP_Latitude=null;
     public static Double ISP_Longitude=null;
+    public static String city = null;
+    public static String locality = null;
 
     public static String reviewDate=null;
     public static String UserEmail=null;

@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,15 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
+import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.models.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.FileNotFoundException;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener{
@@ -100,7 +95,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnWriteReview:
-                Toast.makeText(this, "Entering Isp-Ratings", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity2.this, IspRatingsActivity.class));
                 this.finish();
                 break;

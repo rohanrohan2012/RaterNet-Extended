@@ -34,4 +34,16 @@ public class SaveSharedPreferences {
         editor.clear(); //clear all stored data
         editor.apply();
     }
+    public static void setNetwork(Context ctx,String name){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putBoolean(name,true);
+        editor.apply();
+    }
+    public static boolean getUserNetwork(Context ctx,String name){
+        if(getSharedPreferences(ctx).contains(name)){
+            return true;
+        }
+        return  false;
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.example.raternet_isp_app.endpoints;
 
-import com.example.raternet_isp_app.models.IPInfo;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;

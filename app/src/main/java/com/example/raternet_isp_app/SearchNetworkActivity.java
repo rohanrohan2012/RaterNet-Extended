@@ -58,8 +58,6 @@ public class SearchNetworkActivity extends AppCompatActivity {
                 Toast.makeText(SearchNetworkActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     public void initRecyclerView(){

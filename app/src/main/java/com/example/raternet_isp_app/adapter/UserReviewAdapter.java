@@ -16,7 +16,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.UserReviewHolder> {
+public class  UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.UserReviewHolder> {
 
     private Context context;
     private List<ReviewDetails> userReviews;

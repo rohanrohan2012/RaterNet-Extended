@@ -35,13 +35,31 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="issueTitle_error">Enter Issue Title</string>
+    <string name="issueDetails_error">Enter Issue Details</string>
+
     <string name="price">Price</string>
     <string name="service">Service</string>
     <string name="speed">Speed</string>
     <string name="overall">Overall</string>
     <string name="feedback">Feedback</string>
 
+    <string name="newDiscussion">New Discussion</string>
+    <string name="provideDetails">Please Provide Details</string>
+
+    <string name="demoissue_title">Sample Issue Title</string>
+    <string name="demoissue_type">Sample Issue Type</string>
+    <string name="demouser_email">Sample User Email</string>
+
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    
+    <string-array name="issueTypes">
+        <item>Speed</item>
+        <item>Service</item>
+        <item>Plan</item>
+        <item>Price</item>
+        <item>Other</item>
+    </string-array>
 
 </resources>

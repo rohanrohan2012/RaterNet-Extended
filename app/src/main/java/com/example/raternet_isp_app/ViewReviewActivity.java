@@ -29,7 +29,7 @@ public class ViewReviewActivity extends AppCompatActivity {
 
         recView.setLayoutManager(new LinearLayoutManager(this));
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Getting your Reviews..."); // show progess dialog till server responds
+        progressDialog.setMessage("Getting your Reviews..."); // show progress dialog till server responds
         progressDialog.show();
 
         FirebaseRecyclerOptions<ReviewDetails> options =

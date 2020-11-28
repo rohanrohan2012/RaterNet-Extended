@@ -35,7 +35,6 @@ public class SearchNetworkActivity extends AppCompatActivity {
     private RecyclerView userReviews,companies;
     private List<ReviewDetails> reviewDetailsList;
     private List<Company> companyList;
-    private Integer noofUsers;
     private Map<String,Integer> noofUsersMap;
     private Map<String,Float> avgRatingMap;
 
@@ -88,7 +87,6 @@ public class SearchNetworkActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                noofUsers = (int) snapshot.getChildrenCount();
                 for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
                     //Toast.makeText(getApplicationContext(),messageSnapshot.child("isp_Name").getValue().toString(),Toast.LENGTH_SHORT).show();
                     ReviewDetails review = new ReviewDetails(

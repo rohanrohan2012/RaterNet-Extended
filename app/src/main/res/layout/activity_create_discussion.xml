@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CreateDiscussionActivity">
+
+    <TextView
+        android:id="@+id/txtProvideDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20sp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/provideDetails"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/edtMyLocality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/btn_rounded2"
+        android:layout_marginHorizontal="15sp"
+        android:layout_marginVertical="10sp"
+        android:hint="Your Locality"
+        android:inputType="none"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/edtMyISP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_rounded"
+        android:layout_marginHorizontal="15sp"
+        android:layout_marginVertical="10sp"
+        android:hint="Your ISP"
+        android:inputType="none"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/spinnerIssueType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20sp"
+        android:layout_gravity="center"
+        android:layout_marginVertical="20sp" />
+
+    <EditText
+        android:id="@+id/edtMyIssueTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/btn_rounded3"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="15sp"
+        android:layout_marginVertical="10sp"
+        android:hint="Enter Title of Issue"
+        android:inputType="none"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/edtMyIssueDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/btn_rounded3"
+        android:layout_marginHorizontal="15sp"
+        android:layout_marginVertical="10sp"
+        android:hint="Enter Details of Issue"
+        android:inputType="textMultiLine"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnSubmitIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20sp"
+        android:background="@drawable/btn_rounded"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</LinearLayout>

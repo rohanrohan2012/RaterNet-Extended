@@ -53,11 +53,7 @@
             android:id="@+id/ispFragment"
             android:layout_height="wrap_content"/>
 
-
     </LinearLayout>
-
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -24,4 +24,8 @@ public class Constants
 
     public static int reviewPosition=-1;
     public static String reviewKey=null;
+
+    public static String issueType=null;
+    public static String issueTitle=null;
+    public static String issueDetails=null;
 }

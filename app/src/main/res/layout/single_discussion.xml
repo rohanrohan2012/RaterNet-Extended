@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="5sp"
+    android:padding="10sp"
+    app:cardBackgroundColor="@color/duskYellow"
+    app:cardCornerRadius="15sp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15sp">
+
+        <TextView
+            android:id="@+id/txtissueTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:text="@string/demoissue_title"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginVertical="5sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtissueType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtissueTitle"
+            android:layout_marginLeft="10sp"
+            android:text="@string/demoissue_type"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtuser_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtissueType"
+            android:layout_marginLeft="10sp"
+            android:text="@string/demouser_email"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

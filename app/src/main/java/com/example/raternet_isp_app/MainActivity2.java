@@ -119,6 +119,10 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(MainActivity2.this, MainActivity.class));
                 this.finish();
                 break;
+            case R.id.drawer_discuss:
+                startActivity(new Intent(MainActivity2.this,DiscussActivity.class));
+                this.finish();
+                break;
             default:
                 return true;
         }

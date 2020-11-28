@@ -18,8 +18,10 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/address"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/btn_rounded3"
         android:layout_margin="5dp"
         android:layout_gravity="center"
         android:gravity="center"
@@ -57,7 +59,7 @@
             android:gravity="center"
             android:padding="10sp"
             android:background="@drawable/btn_rounded"
-            android:text="Refresh"
+            android:text="View Details"
             android:textColor="@color/white" />
 
 

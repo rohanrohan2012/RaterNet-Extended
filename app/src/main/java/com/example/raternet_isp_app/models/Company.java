@@ -3,20 +3,31 @@ package com.example.raternet_isp_app.models;
 public class Company {
     private String Name;
     private String Url;
+    private String photoUrl;
     private String Number;
     private String Address;
     private String TypeofService;
-    private Integer noofUsers;
-    private Integer avgRating;
+    private String noofUsers;
+    private String  avgRating;
 
-    public Company(String name, String url, String number, String address, String typeofService, Integer noofUsers, Integer avgRating) {
+    public Company(String name,
+                   String url, String photoUrl, String number, String address, String typeofService, String noofUsers, String avgRating) {
         Name = name;
         Url = url;
+        this.photoUrl = photoUrl;
         Number = number;
         Address = address;
         TypeofService = typeofService;
         this.noofUsers = noofUsers;
         this.avgRating = avgRating;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getName() {
@@ -59,19 +70,19 @@ public class Company {
         TypeofService = typeofService;
     }
 
-    public Integer getNoofUsers() {
+    public String getNoofUsers() {
         return noofUsers;
     }
 
-    public void setNoofUsers(Integer noofUsers) {
+    public void setNoofUsers(String noofUsers) {
         this.noofUsers = noofUsers;
     }
 
-    public Integer getAvgRating() {
+    public String getAvgRating() {
         return avgRating;
     }
 
-    public void setAvgRating(Integer avgRating) {
+    public void setAvgRating(String avgRating) {
         this.avgRating = avgRating;
     }
 }

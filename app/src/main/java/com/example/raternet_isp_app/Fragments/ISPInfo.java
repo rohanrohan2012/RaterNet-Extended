@@ -131,14 +131,12 @@ public class ISPInfo extends Fragment implements View.OnClickListener{
                             try{
                                 JsonObject jsonObject = response.body();
                                 //Setting ISP in Constants
-                                Constants.ISP_Name=jsonObject.get("isp").getAsString();
+                                Constants.ISP_Name=jsonObject.get("org").getAsString();
+                                if(jsonObject.get("org").getAsString().equals("")){
+                                    Constants.ISP_Name = "Hathway Cable and Datacom Pvt Ltd";
+                                }
                                 ISPView.setText(jsonObject.get("isp").getAsString());
                                 organization.setText(jsonObject.get("as").getAsString());
-
-                                if(!SaveSharedPreferences.getUserNetwork(getContext(),Constants.ISP_Name)){
-                                    SaveSharedPreferences.setNetwork(getContext(),Constants.ISP_Name);
-                                    increaseNetworkUser();
-                                }
 
                                 if(Constants.MAP_Longitude!=null && Constants.MAP_Latitude!=null){
                                     geocoder = new Geocoder(getContext());
@@ -190,28 +188,7 @@ public class ISPInfo extends Fragment implements View.OnClickListener{
         return level;
     }
 
-    public void increaseNetworkUser(){
-        try {
-            final DatabaseReference databaseReference =
-                    FirebaseDatabase.getInstance().getReference().child("Company")
-                            .child(Constants.ISP_Name);
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    databaseReference.child("nooofUsers")
-                            .setValue(String.valueOf(Integer.parseInt(snapshot.child("nooofUsers").getValue().toString()) + 1));
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e){
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -219,7 +196,9 @@ public class ISPInfo extends Fragment implements View.OnClickListener{
             case R.id.btnSearchNetwork:
                 startActivity(new Intent(getContext(), SearchNetworkActivity.class));
                 break;
-
+            case R.id.Refresh :
+                ispDetails.setVisibility(View.VISIBLE);
+                break;
             default: break;
         }
     }

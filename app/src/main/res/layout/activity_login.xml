@@ -16,6 +16,8 @@
 
     <EditText
         android:id="@+id/edtLogEmailId"
+        android:background="@drawable/btn_rounded3"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -26,6 +28,8 @@
 
     <EditText
         android:id="@+id/edtLogPass"
+        android:background="@drawable/btn_rounded3"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

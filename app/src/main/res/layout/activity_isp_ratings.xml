@@ -74,9 +74,11 @@
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:layout_gravity="center"
+        android:padding="5sp"
+        android:background="@drawable/btn_rounded3"
         android:layout_marginHorizontal="10sp"
         android:layout_weight="15"
-        android:gravity="bottom"
+        android:gravity="center|left"
         android:hint="@string/feedback"/>
 
     <LinearLayout

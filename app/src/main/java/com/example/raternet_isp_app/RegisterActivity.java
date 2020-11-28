@@ -206,12 +206,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==CAMERA_REQUEST_CODE && resultCode==RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(bitmap);// set captured image in imageView
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(),
                     bitmap, "Title", null);
             mImageUri = Uri.parse(path);
+            imageView.setImageURI(mImageUri);
+
         }
         else {
             mImageUri = data.getData();
